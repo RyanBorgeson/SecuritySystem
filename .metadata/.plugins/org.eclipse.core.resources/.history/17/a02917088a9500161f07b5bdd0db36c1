@@ -1,0 +1,27 @@
+/*
+ * SensorData.h
+ *
+ *  Created on: Oct 18, 2016
+ *      Author: Ryan
+ */
+
+#ifndef STRUCTURES_SENSORDATA_H_
+#define STRUCTURES_SENSORDATA_H_
+
+
+struct SensorData {
+   uint16_t  Photoresistor;
+   struct DateTime
+} SensorData;
+
+
+struct DateTime {
+	uint16_t Year;
+	uint16_t Month;
+	uint16_t Day;
+	uint16_t Hour;
+	uint16_t Minute;
+	uint16_t Seconds;
+};
+
+#endif /* STRUCTURES_SENSORDATA_H_ */

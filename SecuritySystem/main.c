@@ -1,4 +1,5 @@
 #include "driverlib.h"
+#include "Structures/SensorData.h"
 
 int main(void) 
 {
