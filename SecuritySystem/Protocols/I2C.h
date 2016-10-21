@@ -4,5 +4,5 @@
  *  Created on: Oct 18, 2016
  *      Author: Ryan
  */
-#include "../Config.h"
 
+void I2C_Init(void);

@@ -6,9 +6,10 @@
  * @Date 10/18/2016
  */
 
-/* Define number of sensors. Will need to be updated if more are added. */
-#define NUM_PROXIMITY_SENSORS 3
-#define NUM_HALLEFFECT_SENSORS 3
+#ifndef SENSORDATA_H
+#define SENSORDATA_H
+
+#include "../Config.h"
 
 /**
  * DataTime structure that contains Year, Month, Day, Hour, Minute, and Seconds
@@ -40,10 +41,13 @@ typedef struct {
 typedef struct {
    uint16_t Photoresistor;
    uint16_t Temperature;
+   uint16_t TempDecimal;
    uint16_t Proximity[NUM_PROXIMITY_SENSORS];
    uint16_t HallEffect[NUM_HALLEFFECT_SENSORS];
 
-   uint16_t RTC[18];
+   uint16_t RTC[19];
    DateTime DateTime;
    RGB_LED LED;
 } SensorData;
+
+#endif

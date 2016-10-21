@@ -1,8 +1,4 @@
 #include "RTC.h"
-#include "driverlib.h"
-#include "../Config.h"
-#include "../Protocols/I2C.h"
-#include "../Structures/SensorData.h"
 
 /**
  * I2C Writes a specified date and time to the DS3231 over I2C.
@@ -45,7 +41,7 @@ void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Da
  * array byte by byte.
  * Source Code From TI MSP432 Technical Manual.
  */
-void RTC_Module_Read(SensorData Data) {
+void RTC_Module_Read(SensorData * Data) {
 	// Set Master in transmit mode
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
 	// Wait for bus release, ready to write
@@ -59,23 +55,24 @@ void RTC_Module_Read(SensorData Data) {
 	// Wait for bus release, ready to receive
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
 	// read from RTC registers (pointer auto increments after each read)
-	/*Data->RTC[0]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[1]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[2]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[3]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[4]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[5]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[6]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[7]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[8]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[9]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[10]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[11]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[12]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[13]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[14]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[15]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[16]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[17]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-	Data->RTC[18]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);*/
+
+
+	DateTime Now;
+
+	int i;
+	for (i = 0; i < TOTAL_READINGS; i++) {
+		Data->RTC[i] = MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+
+		Now.Day = (i == DAY) ? Data->RTC[DAY] : Now.Day;
+		Now.Month = (i == MONTH) ? Data->RTC[MONTH] : Now.Month;
+		Now.Year = (i == YEAR) ? Data->RTC[YEAR] : Now.Year;
+		Now.Hour = (i == HOUR) ? Data->RTC[HOUR] : Now.Hour;
+		Now.Minute = (i == MINUTE) ? Data->RTC[MINUTE] : Now.Minute;
+		Now.Seconds = (i == SECOND) ? Data->RTC[SECOND] : Now.Seconds;
+
+		Data->Temperature = (i == TEMPERATURE) ? Data->RTC[TEMPERATURE] : Data->Temperature;
+		Data->TempDecimal = (i == TEMP_DECIMAL) ? Data->RTC[TEMP_DECIMAL] : Data->TempDecimal;
+	}
+
+	Data->DateTime = Now;
 }

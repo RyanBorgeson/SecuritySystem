@@ -1,6 +1,7 @@
 # FIXED
 
 Protocols/I2C.obj: ../Protocols/I2C.c
+Protocols/I2C.obj: ../Protocols/../Config.h
 Protocols/I2C.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/driverlib.h
 Protocols/I2C.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/adc14.h
 Protocols/I2C.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdint.h
@@ -43,10 +44,13 @@ Protocols/I2C.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/
 Protocols/I2C.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/timer_a.h
 Protocols/I2C.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/uart.h
 Protocols/I2C.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/wdt_a.h
+Protocols/I2C.obj: ../Protocols/../Structures/SensorData.h
+Protocols/I2C.obj: ../Protocols/../Structures/../Config.h
+Protocols/I2C.obj: ../Protocols/../Structures/../Structures/SensorData.h
 Protocols/I2C.obj: ../Protocols/I2C.h
-Protocols/I2C.obj: ../Protocols/../Config.h
 
 ../Protocols/I2C.c: 
+../Protocols/../Config.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/driverlib.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/adc14.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdint.h: 
@@ -89,5 +93,7 @@ C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/Secu
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/timer_a.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/uart.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/wdt_a.h: 
+../Protocols/../Structures/SensorData.h: 
+../Protocols/../Structures/../Config.h: 
+../Protocols/../Structures/../Structures/SensorData.h: 
 ../Protocols/I2C.h: 
-../Protocols/../Config.h: 

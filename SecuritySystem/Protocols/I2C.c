@@ -4,9 +4,8 @@
  *  Created on: Oct 18, 2016
  *      Author: Ryan
  */
-#include "driverlib.h"
+#include "../Config.h"
 #include "I2C.h"
-
 
 /* I2C Master Configuration Parameter */
 const eUSCI_I2C_MasterConfig i2cConfig =
@@ -19,7 +18,6 @@ const eUSCI_I2C_MasterConfig i2cConfig =
 };
 
 
-
 /**
  * Initialize I2C module to be used with DS3231 RTC. Setup
  * Pin output, initiate master, and determine slave address.
@@ -29,8 +27,8 @@ void I2C_Init(void) {
 
 	// Select Port 6 for I2C
 	// Set Pin 4, 5 to input Primary Module Function,
-	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P6,
-	GPIO_PIN4 + GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
+	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(I2C_PORT,
+			I2C_PINS, GPIO_PRIMARY_MODULE_FUNCTION);
 
 	/* Initializing I2C Master to SMCLK at 400kbs with no autostop */
 	MAP_I2C_initMaster(EUSCI_B1_BASE, &i2cConfig);
