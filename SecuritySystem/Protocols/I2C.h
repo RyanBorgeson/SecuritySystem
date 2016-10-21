@@ -4,12 +4,5 @@
  *  Created on: Oct 18, 2016
  *      Author: Ryan
  */
+#include "../Config.h"
 
-#ifndef PROTOCOLS_I2C_H_
-#define PROTOCOLS_I2C_H_
-
-
-
-
-
-#endif /* PROTOCOLS_I2C_H_ */

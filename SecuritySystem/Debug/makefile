@@ -13,6 +13,7 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./startup_msp432p401r_ccs.obj" \
 "./system_msp432p401r.obj" \
+"./Modules/RTC.obj" \
 "./Protocols/I2C.obj" \
 "../msp432p401r.cmd" \
 "../msp432p4xx_driverlib.lib" \
@@ -27,8 +28,10 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include Modules/subdir_vars.mk
 -include Protocols/subdir_vars.mk
 -include subdir_rules.mk
+-include Modules/subdir_rules.mk
 -include Protocols/subdir_rules.mk
 -include objects.mk
 
@@ -158,8 +161,8 @@ SecuritySystem.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Protocols\I2C.d" 
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Protocols\I2C.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\RTC.d" "Protocols\I2C.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\RTC.obj" "Protocols\I2C.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

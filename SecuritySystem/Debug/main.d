@@ -43,7 +43,9 @@ main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecurityS
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/timer_a.h
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/uart.h
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/wdt_a.h
-main.obj: ../Structures/SensorData.h
+main.obj: ../Protocols/I2C.h
+main.obj: ../Protocols/../Config.h
+main.obj: ../Modules/RTC.h
 
 ../main.c: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/driverlib.h: 
@@ -88,4 +90,6 @@ C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/Secu
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/timer_a.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/uart.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/wdt_a.h: 
-../Structures/SensorData.h: 
+../Protocols/I2C.h: 
+../Protocols/../Config.h: 
+../Modules/RTC.h: 
