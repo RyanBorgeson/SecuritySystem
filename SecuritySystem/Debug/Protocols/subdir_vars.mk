@@ -4,21 +4,33 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Protocols/I2C.c 
+../Protocols/ADC.c \
+../Protocols/I2C.c \
+../Protocols/UART.c 
 
 OBJS += \
-./Protocols/I2C.obj 
+./Protocols/ADC.obj \
+./Protocols/I2C.obj \
+./Protocols/UART.obj 
 
 C_DEPS += \
-./Protocols/I2C.d 
+./Protocols/ADC.d \
+./Protocols/I2C.d \
+./Protocols/UART.d 
 
 C_DEPS__QUOTED += \
-"Protocols\I2C.d" 
+"Protocols\ADC.d" \
+"Protocols\I2C.d" \
+"Protocols\UART.d" 
 
 OBJS__QUOTED += \
-"Protocols\I2C.obj" 
+"Protocols\ADC.obj" \
+"Protocols\I2C.obj" \
+"Protocols\UART.obj" 
 
 C_SRCS__QUOTED += \
-"../Protocols/I2C.c" 
+"../Protocols/ADC.c" \
+"../Protocols/I2C.c" \
+"../Protocols/UART.c" 
 
 

@@ -1,6 +1,4 @@
-#include "driverlib.h"
-#include "Protocols/I2C.h"
-#include "Modules/RTC.h"
+#include "Config.h"
 
 
 /* Function prototypes. */
@@ -17,11 +15,21 @@ int main(void)
 
     while(1) {
     	RTC_Module_Read(&SensorReadings);
+    	AmbientLight_Module_Read();
 
     	__delay_cycles(50);
     }
 }
 
+volatile uint32_t MCLKClockSpeed;
+volatile uint32_t SMCLKClockSpeed;
+
 void InitializeModules(void) {
+	Clock_Init48MHz();
+
+	MCLKClockSpeed = CS_getMCLK();
+	SMCLKClockSpeed = CS_getSMCLK();
+
 	I2C_Init();
+	ADC_Init();
 }

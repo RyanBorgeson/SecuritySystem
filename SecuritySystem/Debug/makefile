@@ -13,8 +13,12 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./startup_msp432p401r_ccs.obj" \
 "./system_msp432p401r.obj" \
+"./Modules/AmbientLight.obj" \
+"./Modules/Clock.obj" \
 "./Modules/RTC.obj" \
+"./Protocols/ADC.obj" \
 "./Protocols/I2C.obj" \
+"./Protocols/UART.obj" \
 "../msp432p401r.cmd" \
 "../msp432p4xx_driverlib.lib" \
 $(GEN_CMDS__FLAG) \
@@ -161,8 +165,8 @@ SecuritySystem.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\RTC.d" "Protocols\I2C.d" 
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\RTC.obj" "Protocols\I2C.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\RTC.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\UART.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\RTC.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\UART.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

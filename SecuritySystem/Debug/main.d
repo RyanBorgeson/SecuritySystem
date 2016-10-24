@@ -1,6 +1,7 @@
 # FIXED
 
 main.obj: ../main.c
+main.obj: ../Config.h
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/driverlib.h
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/adc14.h
 main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdint.h
@@ -44,14 +45,29 @@ main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecurityS
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/uart.h
 main.obj: C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/wdt_a.h
 main.obj: ../Protocols/I2C.h
-main.obj: ../Modules/RTC.h
-main.obj: ../Modules/../Config.h
-main.obj: ../Modules/../Structures/SensorData.h
-main.obj: ../Modules/../Structures/../Config.h
-main.obj: ../Modules/../Structures/../Structures/SensorData.h
-main.obj: ../Modules/../Protocols/I2C.h
+main.obj: ../Protocols/../Config.h
+main.obj: ../Protocols/../Protocols/I2C.h
+main.obj: ../Protocols/../Protocols/ADC.h
+main.obj: ../Protocols/../Protocols/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/ADC.h
+main.obj: ../Protocols/../Protocols/../Protocols/UART.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Protocols/UART.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/Clock.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/Clock.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/RTC.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/RTC.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/AmbientLight.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/AmbientLight.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/SensorData.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h
 
 ../main.c: 
+../Config.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/driverlib.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/adc14.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdint.h: 
@@ -95,9 +111,23 @@ C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/Secu
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/uart.h: 
 C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/SecuritySystem/driverlib/MSP432P4xx/wdt_a.h: 
 ../Protocols/I2C.h: 
-../Modules/RTC.h: 
-../Modules/../Config.h: 
-../Modules/../Structures/SensorData.h: 
-../Modules/../Structures/../Config.h: 
-../Modules/../Structures/../Structures/SensorData.h: 
-../Modules/../Protocols/I2C.h: 
+../Protocols/../Config.h: 
+../Protocols/../Protocols/I2C.h: 
+../Protocols/../Protocols/ADC.h: 
+../Protocols/../Protocols/../Config.h: 
+../Protocols/../Protocols/../Protocols/ADC.h: 
+../Protocols/../Protocols/../Protocols/UART.h: 
+../Protocols/../Protocols/../Protocols/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Protocols/UART.h: 
+../Protocols/../Protocols/../Protocols/../Modules/Clock.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/Clock.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/RTC.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/RTC.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/AmbientLight.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/AmbientLight.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/SensorData.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h: 

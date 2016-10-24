@@ -1,68 +1,55 @@
 #include "RTC.h"
 
-/**
- * I2C Writes a specified date and time to the DS3231 over I2C.
- * Times and Dates must be declared using BCD.
- * Source Code From TI MSP432 Technical Manual.
- * @param Year The Year.
- * @param Month The Month.
- * @param DayOfWeek The day of the week. (Monday - Sunday).
- * @param Day The day of the month.
- * @param Hour The Hour.
- * @param Minute The minute.
- * @param Second The seconds.
- */
+
 void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second) {
-	/* Set Master in transmit mode */
+	// Set Master in transmit mode.
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
-	// Wait for bus release, ready to write
+	// Wait for bus release, ready to write.
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
-	// set pointer to beginning of RTC registers
+	// Set pointer to beginning of RTC registers.
 	MAP_I2C_masterSendMultiByteStart(EUSCI_B1_BASE,0);
-	// and write to seconds register
+	// Write to seconds register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Second);
-	// write to minutes register
+	// Write to minutes register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Minute);
-	// write to hours register
+	// Write to hours register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Hour);
-	// write to day register
+	// Write to day register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Day);
-	// write to date register
+	// Write to date register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, DayOfWeek);
-	// write to months register
+	// Write to months register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Month);
-	// write to year register and send stop
+	// Write to year register and send stop.
 	MAP_I2C_masterSendMultiByteFinish(EUSCI_B1_BASE, Year);
 }
 
 
-/**
- * I2C Reads the values from the RTC and stores them in an
- * array byte by byte.
- * Source Code From TI MSP432 Technical Manual.
- */
 void RTC_Module_Read(SensorData * Data) {
-	// Set Master in transmit mode
+	// Set Master in transmit mode.
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
-	// Wait for bus release, ready to write
+	// Wait for bus release, ready to write.
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
-	// set pointer to beginning of RTC registers
+	// Set pointer to beginning of RTC registers.
 	MAP_I2C_masterSendSingleByte(EUSCI_B1_BASE,0);
-	// Wait for bus release
+	// Wait for bus release.
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
-	// Set Master in receive mode
+	// Set Master in receive mode.
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_MODE);
-	// Wait for bus release, ready to receive
+	// Wait for bus release, ready to receive.
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
-	// read from RTC registers (pointer auto increments after each read)
 
 
+	// Read time, date, and temperature from RTC registers.
+	// DateTime type definition that holds the returned data.
 	DateTime Now;
-
 	int i;
+
+	// Read all results and save RTC register values.
 	for (i = 0; i < TOTAL_READINGS; i++) {
 		Data->RTC[i] = MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
 
+		// Save date and time.
 		Now.Day = (i == DAY) ? Data->RTC[DAY] : Now.Day;
 		Now.Month = (i == MONTH) ? Data->RTC[MONTH] : Now.Month;
 		Now.Year = (i == YEAR) ? Data->RTC[YEAR] : Now.Year;
@@ -70,9 +57,11 @@ void RTC_Module_Read(SensorData * Data) {
 		Now.Minute = (i == MINUTE) ? Data->RTC[MINUTE] : Now.Minute;
 		Now.Seconds = (i == SECOND) ? Data->RTC[SECOND] : Now.Seconds;
 
+		// Save temperature information.
 		Data->Temperature = (i == TEMPERATURE) ? Data->RTC[TEMPERATURE] : Data->Temperature;
 		Data->TempDecimal = (i == TEMP_DECIMAL) ? Data->RTC[TEMP_DECIMAL] : Data->TempDecimal;
 	}
 
+	// Add date and time to the data object.
 	Data->DateTime = Now;
 }
