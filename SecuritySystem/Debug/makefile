@@ -15,7 +15,10 @@ ORDERED_OBJS += \
 "./system_msp432p401r.obj" \
 "./Modules/AmbientLight.obj" \
 "./Modules/Clock.obj" \
+"./Modules/Display.obj" \
+"./Modules/HallEffect.obj" \
 "./Modules/RTC.obj" \
+"./Modules/ST7735.obj" \
 "./Protocols/ADC.obj" \
 "./Protocols/I2C.obj" \
 "./Protocols/UART.obj" \
@@ -165,8 +168,8 @@ SecuritySystem.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\RTC.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\UART.d" 
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\RTC.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\UART.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\Display.d" "Modules\HallEffect.d" "Modules\RTC.d" "Modules\ST7735.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\UART.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\Display.obj" "Modules\HallEffect.obj" "Modules\RTC.obj" "Modules\ST7735.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\UART.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

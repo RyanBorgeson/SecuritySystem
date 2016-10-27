@@ -62,9 +62,13 @@ main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Module
 main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/AmbientLight.h
 main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Config.h
 main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/AmbientLight.h
-main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/SensorData.h
-main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Config.h
-main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/HallEffect.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/HallEffect.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/ST7735.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h
+main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h
 
 ../main.c: 
 ../Config.h: 
@@ -128,6 +132,10 @@ C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/Secu
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/AmbientLight.h: 
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Config.h: 
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/AmbientLight.h: 
-../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/SensorData.h: 
-../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Config.h: 
-../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/HallEffect.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/HallEffect.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/ST7735.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h: 
