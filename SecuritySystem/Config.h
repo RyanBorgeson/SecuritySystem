@@ -31,4 +31,6 @@
 
 /* Define Port and Pin mappings for Hall effect sensors. */
 #define HALL_EFFECT_PORT_1 GPIO_PORT_P4
+#define HALL_EFFECT_PORT_2 GPIO_PORT_P6
 #define HALL_EFFECT_PIN_1 GPIO_PIN0
+#define HALL_EFFECT_PIN_2 GPIO_PIN1
