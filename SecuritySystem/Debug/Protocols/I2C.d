@@ -65,9 +65,12 @@ Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/
 Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Config.h
 Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/HallEffect.h
 Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/ST7735.h
-Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h
-Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h
-Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h
+Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/RGB.h
+Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Config.h
+Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Modules/RGB.h
+Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h
+Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h
+Protocols/I2C.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h
 
 ../Protocols/I2C.c: 
 ../Protocols/I2C.h: 
@@ -134,6 +137,9 @@ C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/Secu
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Config.h: 
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/HallEffect.h: 
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/ST7735.h: 
-../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h: 
-../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h: 
-../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/RGB.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Modules/RGB.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h: 
+../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h: 

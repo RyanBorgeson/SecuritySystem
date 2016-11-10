@@ -114,4 +114,5 @@ SUBDIRS := \
 . \
 Modules \
 Protocols \
+Sequences \
 

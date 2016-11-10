@@ -1818,11 +1818,11 @@ void Display_Init(void) {
 	// Rotate to landscape mode.
 
 	ST7735_InitR(INITR_REDTAB);
-	ST7735_FillScreen(0xFFFF);
+	ST7735_FillScreen(0x0000);
 
 	ST7735_SetRotation(DISPLAY_LANDSCAPE);
-	ST7735_DrawBitmap(0, SCREEN_HEIGHT - 1, MainMenuDesign, SCREEN_WIDTH, SCREEN_HEIGHT);
-	Display_Module_DrawString("SECURED           # MENU", ST7735_Color565(147, 200, 70), ST7735_Color565(32, 36, 39), 7, SCREEN_HEIGHT - 13, 1);
+	//ST7735_DrawBitmap(0, SCREEN_HEIGHT - 1, MainMenuDesign, SCREEN_WIDTH, SCREEN_HEIGHT);
+	//Display_Module_DrawString("SECURED           # MENU", ST7735_Color565(147, 200, 70), ST7735_Color565(32, 36, 39), 7, SCREEN_HEIGHT - 13, 1);
 	//ST7735_FillRect(0, SCREEN_HEIGHT - 20, SCREEN_WIDTH, 20, ST7735_Color565(46, 204, 113));
 
 }

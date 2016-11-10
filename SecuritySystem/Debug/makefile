@@ -17,12 +17,15 @@ ORDERED_OBJS += \
 "./Modules/Clock.obj" \
 "./Modules/Display.obj" \
 "./Modules/HallEffect.obj" \
+"./Modules/Proximity.obj" \
+"./Modules/RGB.obj" \
 "./Modules/RTC.obj" \
 "./Modules/ST7735.obj" \
 "./Protocols/ADC.obj" \
 "./Protocols/I2C.obj" \
 "./Protocols/PWM.obj" \
 "./Protocols/UART.obj" \
+"./Sequences/Startup.obj" \
 "../msp432p401r.cmd" \
 "../msp432p4xx_driverlib.lib" \
 $(GEN_CMDS__FLAG) \
@@ -38,9 +41,11 @@ RMDIR := RMDIR /S/Q
 -include subdir_vars.mk
 -include Modules/subdir_vars.mk
 -include Protocols/subdir_vars.mk
+-include Sequences/subdir_vars.mk
 -include subdir_rules.mk
 -include Modules/subdir_rules.mk
 -include Protocols/subdir_rules.mk
+-include Sequences/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -169,8 +174,8 @@ SecuritySystem.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\Display.d" "Modules\HallEffect.d" "Modules\RTC.d" "Modules\ST7735.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\PWM.d" "Protocols\UART.d" 
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\Display.obj" "Modules\HallEffect.obj" "Modules\RTC.obj" "Modules\ST7735.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\PWM.obj" "Protocols\UART.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\Display.d" "Modules\HallEffect.d" "Modules\Proximity.d" "Modules\RGB.d" "Modules\RTC.d" "Modules\ST7735.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\PWM.d" "Protocols\UART.d" "Sequences\Startup.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\Display.obj" "Modules\HallEffect.obj" "Modules\Proximity.obj" "Modules\RGB.obj" "Modules\RTC.obj" "Modules\ST7735.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\PWM.obj" "Protocols\UART.obj" "Sequences\Startup.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

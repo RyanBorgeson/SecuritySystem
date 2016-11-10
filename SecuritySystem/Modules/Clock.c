@@ -8,25 +8,25 @@
 
 void Clock_Init48MHz() {
 
-		// Configuring pins for peripheral/crystal usage.
-		MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_PJ, GPIO_PIN3 | GPIO_PIN2, GPIO_PRIMARY_MODULE_FUNCTION);
-		MAP_GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
+	// Configuring pins for peripheral/crystal usage.
+	MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_PJ, GPIO_PIN3 | GPIO_PIN2, GPIO_PRIMARY_MODULE_FUNCTION);
+	MAP_GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
 
-		// Sets the external clock source frequency which cna be read using getMCLK, and getSMCLK.
-		CS_setExternalClockSourceFrequency(32000,EXTERNAL_CLOCK_SOURCE_FREQUENCY);
+	// Sets the external clock source frequency which cna be read using getMCLK, and getSMCLK.
+	CS_setExternalClockSourceFrequency(32000,EXTERNAL_CLOCK_SOURCE_FREQUENCY);
 
-		// Starting HFXT in non-bypass mode without a timeout. Before we start
-		// we have to change VCORE to 1 to support the 48MHz frequency.
-		MAP_PCM_setCoreVoltageLevel(PCM_VCORE1);
+	// Starting HFXT in non-bypass mode without a timeout. Before we start
+	// we have to change VCORE to 1 to support the 48MHz frequency.
+	MAP_PCM_setCoreVoltageLevel(PCM_VCORE1);
 
-		MAP_FlashCtl_setWaitState(FLASH_BANK0, 2);
-		MAP_FlashCtl_setWaitState(FLASH_BANK1, 2);
+	MAP_FlashCtl_setWaitState(FLASH_BANK0, 2);
+	MAP_FlashCtl_setWaitState(FLASH_BANK1, 2);
 
-		// False means that there are no timeouts set, will return when stable
-		CS_startHFXT(false);
+	// False means that there are no timeouts set, will return when stable
+	CS_startHFXT(false);
 
-		// Initializing MCLK to HFXT (effectively 48MHz).
-		MAP_CS_initClockSignal(CS_MCLK, CS_HFXTCLK_SELECT, CS_CLOCK_DIVIDER_1);
+	// Initializing MCLK to HFXT (effectively 48MHz).
+	MAP_CS_initClockSignal(CS_MCLK, CS_HFXTCLK_SELECT, CS_CLOCK_DIVIDER_1);
 
 }
 

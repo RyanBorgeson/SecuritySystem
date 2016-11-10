@@ -8,6 +8,7 @@
 #include "Modules/AmbientLight.h"
 #include "Modules/HallEffect.h"
 #include "Modules/ST7735.h"
+#include "Modules/RGB.h"
 
 #include "Structures/SensorData.h"
 
