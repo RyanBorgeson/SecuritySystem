@@ -1788,7 +1788,7 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 	int i;
 
 	for (i = 0; i < strlen(String); i++) {
-		ST7735_DrawChar(x + (i * 6), y, String[i], Color, Background, size);
+		ST7735_DrawChar(x + (i * 10), y, String[i], Color, Background, size);
 	}
 }
 
@@ -1805,8 +1805,6 @@ void Display_Module_MainScreen(SensorData * Data) {
 			ST7735_DrawBitmap(0, SCREEN_HEIGHT - 48, Armed, SCREEN_WIDTH, 48);
 			Display_Module_DrawString("UNSECURED         # MENU", ST7735_Color565(235, 107, 107), ST7735_Color565(32, 36, 39), 7, SCREEN_HEIGHT - 13, 1);
 		}
-
-	//Display_Module_DrawString("11:43:43", ST7735_Color565(0, 0, 0), ST7735_Color565(255, 255, 255), 20, 40, 1);
 
 	PreviousHallEffect = Data->HallEffect[0];
 	PreviousHallEffect = Data->HallEffect[1];

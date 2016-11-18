@@ -72,6 +72,9 @@ main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Module
 main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h
 main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h
 main.obj: ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h
+main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdio.h
+main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/linkage.h
+main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdarg.h
 
 ../main.c: 
 ../Config.h: 
@@ -145,3 +148,6 @@ C:/Users/Ryan/Documents/School/EGR/EGR\ 326\ Design\ Project/SecuritySystem/Secu
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/SensorData.h: 
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Config.h: 
 ../Protocols/../Protocols/../Protocols/../Modules/../Modules/../Modules/../Modules/../Modules/../Structures/../Structures/SensorData.h: 
+C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdio.h: 
+C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/linkage.h: 
+C:/ti/ccsv6/tools/compiler/ti-cgt-arm_16.6.0.STS/include/stdarg.h: 
