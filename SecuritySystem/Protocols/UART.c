@@ -31,13 +31,13 @@ void UART_Init(void){
 	EUSCI_A0->IE &= ~0x000F; // disable interrupts
 
 
-	EUSCI_A2->CTLW0 = 0x0001;
+	/*EUSCI_A2->CTLW0 = 0x0001;
 	EUSCI_A2->CTLW0 = 0x00C1;
 	EUSCI_A2->MCTLW &= ~0xFFF1;
 	P3SEL0 |= 0x0C;
 	P3SEL1 &= 0x0C;
 	EUSCI_A2->CTLW0 &= ~0x0001;
-	EUSCI_A2->IE &= ~0x000F;
+	EUSCI_A2->IE &= ~0x000F;*/
 }
 
 /**

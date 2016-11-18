@@ -45,7 +45,7 @@ void SysTick_Init(void)
 void SysTick_delay(uint16_t Delay)
 {
 	// Load value will also depend on MCLK clock frequency.
-	SysTick->LOAD = ((Delay*16*3000) - 1);
+	SysTick->LOAD = ((Delay*128*3000) - 1);
 	 // Any write to CVR clears it and COUNTFLAG in CSR
 	SysTick->VAL = 0;
 	// Wait for flag to be SET (Timeout happened)

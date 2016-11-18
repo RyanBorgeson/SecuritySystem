@@ -6,13 +6,12 @@
  * Initializes the ADC on the MSP432 and configures ADC memory
  * to save the ADC value when completed.
  */
-void ADC_Init() {
+void ADC_Init(void) {
 
 	// TODO: Ensure the clock divider is set correctly. I think this is for 3Mhz.
 	// Initializing ADC (MCLK/1/4)
 	MAP_ADC14_enableModule();
 	MAP_ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_4, 0);
-
 
 	// Configuring GPIOs (5.5 A0)
 	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(ADC_PORT, ADC_PINS, GPIO_TERTIARY_MODULE_FUNCTION);
