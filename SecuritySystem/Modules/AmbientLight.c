@@ -6,17 +6,17 @@
 #include "AmbientLight.h"
 
 
-void AmbientLight_Module_Read(SensorData Data) {
+void AmbientLight_Module_Read(SensorData * Data) {
 
 	// Reads ADC values for the photoresistor.
-	Data.PhotoresistorADC = MAP_ADC14_getResult(ADC_MEM0);
+	Data->PhotoresistorADC = MAP_ADC14_getResult(ADC_MEM0);
 
 	// Normalized photoresistor value.
-	Data.Photoresistor = (Data.PhotoresistorADC * NORMALIZED_VOLTAGE) / 16384;
+	Data->Photoresistor = (Data->PhotoresistorADC * NORMALIZED_VOLTAGE) / 16384;
 
 	// Control the brightness of the LED by settings
 	// the calculated duty cycle.
-	Data.LEDDutyCycle = 100 - (((Data.Photoresistor) / AMBIENT_MAX_VOLTAGE) * 100);
+	Data->LEDDutyCycle = 100 - (((Data->Photoresistor) / AMBIENT_MAX_VOLTAGE) * 100);
 
 	// Enabling/Toggling Conversion
 	MAP_ADC14_enableConversion();
