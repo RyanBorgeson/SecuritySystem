@@ -39,7 +39,7 @@ typedef struct {
  * If additional sensors or readings are required this structure can be added to.
  */
 typedef struct {
-   float Photoresistor;
+   double Photoresistor;
    uint16_t PhotoresistorADC;
    uint16_t LEDDutyCycle;
 

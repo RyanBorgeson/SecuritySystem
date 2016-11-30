@@ -18,7 +18,7 @@
  * in a sensor data structure.
  * @param Data Sensor data and readings.
  */
-void AmbientLight_Module_Read(SensorData Data);
+void AmbientLight_Module_Read(SensorData * Data);
 
 
 #endif

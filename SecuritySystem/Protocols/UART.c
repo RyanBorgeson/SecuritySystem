@@ -66,8 +66,8 @@ void WireLess_Out(char data){
  * Source Code From Lecture.
  */
 char WireLess_In(void){
-	while((EUSCI_A2->IFG&0x01) == 0);
-	return((char)(EUSCI_A2->RXBUF));
+	while ((EUSCI_A2->IFG&0x01) == 0);
+	return ((char)(EUSCI_A2->RXBUF));
 }
 
 /**
@@ -88,3 +88,8 @@ void WireLess_OutString(char * OutputString) {
 		WireLess_Out(OutputString[i]);
 	}
 }
+
+
+
+
+
