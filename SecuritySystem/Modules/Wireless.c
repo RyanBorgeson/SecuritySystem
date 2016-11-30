@@ -20,7 +20,8 @@ void Wireless_Init(void) {
 	WireLess_OutString("AT+CSYSWDTENABLE\r\n");
 
 
-
+	//GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
+	//GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1);
 }
 
 
@@ -32,21 +33,31 @@ void SendPostRequest(SensorData * SensorReadings) {
 	char CIPSEND[100];
 
 
-	sprintf(JSONPayload, "{\"Temperature\":\"22\",\"AmbientLight\":\"%.5f\"}", SensorReadings->Photoresistor);
-	sprintf(Headers, "POST /api/sensor HTTP/1.1\r\nHost: ssapi.ryanborgeson.com\r\nContent-Type: application/json\r\nContent-Length: %i\r\n\r\n%s\r\n\r\n", strlen(JSONPayload), JSONPayload);
+	sprintf(JSONPayload, "{\"Temperature\":\"22\",\"AmbientLight\":\"0.7\"}", SensorReadings->Photoresistor);
+	//sprintf(JSONPayload, "{\"Temperature\":\"22\",\"AmbientLight\":\"%.5f\"}", SensorReadings->Photoresistor);
+	sprintf(Headers, "POST /api/sensor HTTP/1.1\r\nHost: ssapi.ryanborgeson.com\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %i\r\n\r\n%s\r\n\r\n", strlen(JSONPayload), JSONPayload);
 	sprintf(CIPSEND, "AT+CIPSEND=4,%i\r\n\r\n", (strlen(Headers) + strlen(JSONPayload) - 28));
 
 
 	WireLess_OutString("AT+CIPMUX=1\r\n");
 	PatternCheck("OK");
+	//Delay1ms(50);
 	WireLess_OutString("AT+CIPSTART=4,\"TCP\",\"ssapi.ryanborgeson.com\",80\r\n");
 	PatternCheck("OK");
+	//Delay1ms(50);
+
+
 	WireLess_OutString(CIPSEND);
 	PatternCheck("OK");
+	//Delay1ms(50);
 	WireLess_OutString(Headers);
 	WireLess_OutString("\r\n\r\n");
 	//PatternCheck("OK");
+	//Delay1ms(500);
 
+	//WireLess_OutString("AT+CIPCLOSE\r\n");
+	//Delay1ms(50);
+	//PatternCheck("OK");
 
 	// Reset wireless device just incase it has any issues.
 	//if (RequestsSent > 20) {
