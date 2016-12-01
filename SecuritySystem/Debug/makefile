@@ -17,6 +17,7 @@ ORDERED_OBJS += \
 "./Modules/Clock.obj" \
 "./Modules/Display.obj" \
 "./Modules/HallEffect.obj" \
+"./Modules/Keypad.obj" \
 "./Modules/Proximity.obj" \
 "./Modules/RGB.obj" \
 "./Modules/RTC.obj" \
@@ -176,8 +177,8 @@ SecuritySystem.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\Display.d" "Modules\HallEffect.d" "Modules\Proximity.d" "Modules\RGB.d" "Modules\RTC.d" "Modules\ST7735.d" "Modules\Wireless.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\PWM.d" "Protocols\UART.d" "Sequences\MainSequence.d" "Sequences\Startup.d" 
-	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\Display.obj" "Modules\HallEffect.obj" "Modules\Proximity.obj" "Modules\RGB.obj" "Modules\RTC.obj" "Modules\ST7735.obj" "Modules\Wireless.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\PWM.obj" "Protocols\UART.obj" "Sequences\MainSequence.obj" "Sequences\Startup.obj" 
+	-$(RM) "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "Modules\AmbientLight.d" "Modules\Clock.d" "Modules\Display.d" "Modules\HallEffect.d" "Modules\Keypad.d" "Modules\Proximity.d" "Modules\RGB.d" "Modules\RTC.d" "Modules\ST7735.d" "Modules\Wireless.d" "Protocols\ADC.d" "Protocols\I2C.d" "Protocols\PWM.d" "Protocols\UART.d" "Sequences\MainSequence.d" "Sequences\Startup.d" 
+	-$(RM) "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "Modules\AmbientLight.obj" "Modules\Clock.obj" "Modules\Display.obj" "Modules\HallEffect.obj" "Modules\Keypad.obj" "Modules\Proximity.obj" "Modules\RGB.obj" "Modules\RTC.obj" "Modules\ST7735.obj" "Modules\Wireless.obj" "Protocols\ADC.obj" "Protocols\I2C.obj" "Protocols\PWM.obj" "Protocols\UART.obj" "Sequences\MainSequence.obj" "Sequences\Startup.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

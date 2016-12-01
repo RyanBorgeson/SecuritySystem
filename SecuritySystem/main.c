@@ -11,35 +11,22 @@
 SensorData SensorReadings;
 
 
-
 volatile uint32_t MCLKClockSpeed;
 volatile uint32_t SMCLKClockSpeed;
-volatile uint32_t ACLKClockSpeed, PIN, ButtonState;
+volatile uint32_t ACLKClockSpeed;
 
 
 int main(void) {
 
+	Startup_Sequence(&SensorReadings);
+
+
+	// Load main program sequence assuming startup passes all
+	// initialization tests.
+	Main_Sequence(&SensorReadings);
+
+	while(1) {
+		Keypad_Scan();
+	}
 
 }
-
-void InitializeModules(void) {
-	Clock_Init48MHz();
-		Display_Init();
-	MCLKClockSpeed = CS_getMCLK();
-	SMCLKClockSpeed = CS_getSMCLK();
-	ACLKClockSpeed = CS_getACLK();
-
-
-		SysTick_Init();
-	//RGB_Init();
-
-	//HallEffect_Init();
-	//Proximity_Init();
-	//ADC_Init();
-	//UART_Init();
-	//I2C_Init();
-
-
-}
-
-

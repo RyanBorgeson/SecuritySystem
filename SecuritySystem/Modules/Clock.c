@@ -6,7 +6,7 @@
 #include "Clock.h"
 
 
-void Clock_Init48MHz() {
+void Clock_Init() {
 
 	// Configuring pins for peripheral/crystal usage.
 	MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_PJ, GPIO_PIN3 | GPIO_PIN2, GPIO_PRIMARY_MODULE_FUNCTION);
@@ -27,6 +27,9 @@ void Clock_Init48MHz() {
 
 	// Initializing MCLK to HFXT (effectively 48MHz).
 	MAP_CS_initClockSignal(CS_MCLK, CS_HFXTCLK_SELECT, CS_CLOCK_DIVIDER_1);
+
+	// Setup ACLK clock source.
+	CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_4);
 
 }
 
