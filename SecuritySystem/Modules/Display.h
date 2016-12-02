@@ -5,7 +5,7 @@
 #include "../Config.h"
 
 
-#define DISPLAY_LANDSCAPE 3
+#define DISPLAY_LANDSCAPE 1
 #define SCREEN_WIDTH 160
 #define SCREEN_HEIGHT 128
 

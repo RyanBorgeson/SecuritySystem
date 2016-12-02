@@ -8,6 +8,7 @@ void RGB_Init(void) {
 	GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN1);
 	GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN2);
 
+	GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 }
 
 

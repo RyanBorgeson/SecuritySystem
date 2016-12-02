@@ -28,6 +28,8 @@ void Clock_Init() {
 	// Initializing MCLK to HFXT (effectively 48MHz).
 	MAP_CS_initClockSignal(CS_MCLK, CS_HFXTCLK_SELECT, CS_CLOCK_DIVIDER_1);
 
+	MAP_CS_initClockSignal(CS_SMCLK, CS_HFXTCLK_SELECT, CS_CLOCK_DIVIDER_16);
+
 	// Setup ACLK clock source.
 	CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_4);
 

@@ -65,3 +65,60 @@ void RTC_Module_Read(SensorData * Data) {
 	// Add date and time to the data object.
 	Data->DateTime = Now;
 }
+
+void RTC_Init(void) {
+
+	GPIO_setAsInputPin(GPIO_PORT_P6, GPIO_PIN7);
+
+	MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P6, GPIO_PIN7, GPIO_HIGH_TO_LOW_TRANSITION);
+	MAP_GPIO_clearInterruptFlag(GPIO_PORT_P6, GPIO_PIN7);
+	MAP_GPIO_enableInterrupt(GPIO_PORT_P6, GPIO_PIN7);
+
+
+	RTC_Setup_SecondInterrupts();
+	RTC_ClearTimer_Interrupt_Flag();
+}
+
+
+void RTC_Setup_SecondInterrupts(void) {
+
+	// Set Master in transmit mode.
+	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
+	// Wait for bus release, ready to write.
+	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
+
+	// Setup RTC to trigger an interrupt every second.
+	// Start A1M4, A1M3, A1M2, A1M1 by setting them to one.
+	MAP_I2C_masterSendMultiByteStart(EUSCI_B1_BASE, 0x07);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
+
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
+
+	MAP_I2C_masterSendMultiByteFinish(EUSCI_B1_BASE, 0b00011101);
+}
+
+void RTC_ClearTimer_Interrupt_Flag(void) {
+	// Set Master in transmit mode.
+	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
+	// Wait for bus release, ready to write.
+	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
+
+	MAP_I2C_masterSendMultiByteStart(EUSCI_B1_BASE, 0x0F);
+	MAP_I2C_masterSendMultiByteFinish(EUSCI_B1_BASE, 0b10001000);
+}
+
+/* Port1 ISR */
+void PORT6_IRQHandler(void)
+{
+    // Toggling the output on the LED
+    if(P6->IFG & BIT7)
+    	GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
+
+    GPIO_clearInterruptFlag(GPIO_PORT_P6, GPIO_PIN7);
+    RTC_ClearTimer_Interrupt_Flag();
+}

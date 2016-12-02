@@ -15,8 +15,8 @@ volatile uint32_t MCLKClockSpeed;
 volatile uint32_t SMCLKClockSpeed;
 volatile uint32_t ACLKClockSpeed;
 
-
 int main(void) {
+
 
 	Startup_Sequence(&SensorReadings);
 
@@ -24,9 +24,5 @@ int main(void) {
 	// Load main program sequence assuming startup passes all
 	// initialization tests.
 	Main_Sequence(&SensorReadings);
-
-	while(1) {
-		Keypad_Scan();
-	}
 
 }

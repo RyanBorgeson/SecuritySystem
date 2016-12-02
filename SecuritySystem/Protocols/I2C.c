@@ -9,16 +9,11 @@
 /* I2C Master Configuration Parameter */
 const eUSCI_I2C_MasterConfig i2cConfig =
 {
-	// SMCLK Clock Source
-	EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
-	// SMCLK = 48MHz
-	48000000,
-	// Desired I2C Clock of 400khz
-	EUSCI_B_I2C_SET_DATA_RATE_400KBPS,
-	// No byte counter threshold
-	0,
-	// No Autostop
-	EUSCI_B_I2C_NO_AUTO_STOP
+	EUSCI_B_I2C_CLOCKSOURCE_SMCLK, 		// SMCLK Clock Source
+	3000000, 							// SMCLK = 3MHz
+	EUSCI_B_I2C_SET_DATA_RATE_400KBPS,  // Desired I2C Clock of 400khz
+	0,									// No byte counter threshold
+	EUSCI_B_I2C_NO_AUTO_STOP			// No Autostop
 };
 
 
@@ -39,7 +34,7 @@ void I2C_Init(void) {
 	/* Specify slave address */
 	MAP_I2C_setSlaveAddress(EUSCI_B1_BASE, RTC_MODULE_ADDRESS);
 	/* Set Master in transmit mode */
-	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
+	//MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
 	/* Enable I2C Module to start operations */
 	MAP_I2C_enableModule(EUSCI_B1_BASE);
 }
