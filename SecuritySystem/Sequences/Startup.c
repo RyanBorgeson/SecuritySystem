@@ -27,7 +27,7 @@ void Startup_Sequence(SensorData * Data) {
 	RGB_Init();
 
 	//RTC_Init();
-	Keypad_Init();
+	Keypad_Init(Data);
 
 	// Display splash screen on startup.
 	Display_Splash_Screen();
@@ -35,10 +35,10 @@ void Startup_Sequence(SensorData * Data) {
 
 	// Attempt to enable master interrupts.
 	Interrupt_enableMaster();
-	Interrupt_registerInterrupt(PORT2_IRQn, PORT2_IRQHandler());
+	//Interrupt_registerInterrupt(PORT2_IRQn, PORT2_IRQHandler());
 	//Interrupt_registerInterrupt(PORT6_IRQn, PORT6_IRQHandler());
-	Interrupt_enableInterrupt(INT_PORT2);
-	Interrupt_registerInterrupt(PORT2_IRQn, PORT2_IRQHandler());
+	//Interrupt_enableInterrupt(INT_PORT2);
+	//Interrupt_registerInterrupt(PORT2_IRQn, PORT2_IRQHandler());
 	//Interrupt_enableInterrupt(INT_PORT6);
 	Interrupt_enableInterrupt(INT_EUSCIB1);
 

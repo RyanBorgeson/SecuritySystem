@@ -1,0 +1,16 @@
+#Thu, 01 Dec 2016 21:56:25 -0500
+#Ant properties
+#Thu Dec 01 21:56:25 EST 2016
+p.BufferIPAddress=
+p.BufferSize=
+p.BufferSizeCoreID=
+p.BufferType=
+p.ComPort=9
+p.NumberOfPins=
+p.Receiver=SWO Trace
+p.SwoEncoding=UART
+p.TimestampingResolution=4
+p.Version=1.0.0
+
+dvt.activity.name=Hardware Trace Analyzer/Interrupt Profiling
+dvt.factory.activity=${dvt.basepath}common/analysis/usecases/dvt/Interrupt_Profiling_Trace.control.xml

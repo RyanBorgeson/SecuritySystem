@@ -47,6 +47,7 @@ typedef struct {
    uint16_t TempDecimal;
    uint16_t Proximity[NUM_PROXIMITY_SENSORS];
    uint8_t HallEffect[NUM_HALLEFFECT_SENSORS];
+   char KeyCombo[4];
 
    uint16_t RTC[19];
    DateTime DateTime;
