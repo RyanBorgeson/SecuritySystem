@@ -56,13 +56,15 @@ void Main_Sequence(SensorData * Data) {
 
 				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
 
-				if (CurrentDigit == 4 && strcmp(Data->EnteredPIN, Data->SavedPIN) == 0) {
+				int KeyComparison = EqualPins(Data->EnteredPIN, Data->SavedPIN);
+
+				if (CurrentDigit == 4 && KeyComparison) {
 					Display_Clear_Screen();
 					Data->EnteredPIN[0] = '\0';
 					Data->State = MENU;
 					CurrentDigit = 0;
 				}
-				if (CurrentDigit == 4 && strcmp(Data->EnteredPIN, Data->SavedPIN) != 0) {
+				if (CurrentDigit == 4 && !KeyComparison) {
 					Display_Clear_Screen();
 					Data->EnteredPIN[0] = '\0';
 					Data->State = MAIN;
@@ -136,4 +138,8 @@ void TA0_0_IRQHandler(SensorData * Data) {
 
     // Clear the compare interrupt flag
     TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;
+}
+
+int EqualPins(char * SavedPin, char * EnteredPin) {
+	return (SavedPin[0] == EnteredPin[0]) && (SavedPin[1] == EnteredPin[1]) && (SavedPin[2] == EnteredPin[2]) && (SavedPin[3] == EnteredPin[3]);
 }
