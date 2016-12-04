@@ -63,46 +63,47 @@ int Keypad_Debounce(void) {
 
 
 
-void Keypad_SaveButtonPress(uint16_t PressedKey, SensorData * Data) {
+int Keypad_SaveButtonPress(uint16_t PressedKey, SensorData * Data) {
 
 	switch (PressedKey) {
 		case ONE:
 			Keypad_InsertKeyCombo('1', Data);
-			break;
+			return 1;
 		case TWO:
 			Keypad_InsertKeyCombo('2', Data);
-			break;
+			return 1;
 		case THREE:
 			Keypad_InsertKeyCombo(0x33, Data);
-			break;
+			return 1;
 		case FOUR:
 			Keypad_InsertKeyCombo(0x34, Data);
-			break;
+			return 1;
 		case FIVE:
 			Keypad_InsertKeyCombo(0x35, Data);
-			break;
+			return 1;
 		case SIX:
 			Keypad_InsertKeyCombo(0x36, Data);
-			break;
+			return 1;
 		case SEVEN:
 			Keypad_InsertKeyCombo(0x37, Data);
-			break;
+			return 1;
 		case EIGHT:
 			Keypad_InsertKeyCombo(0x38, Data);
-			break;
+			return 1;
 		case NINE:
 			Keypad_InsertKeyCombo(0x39, Data);
-			break;
+			return 1;
 		case ZERO:
 			Keypad_InsertKeyCombo(0x30, Data);
-			break;
+			return 1;
 		case ASTERISK:
 			Keypad_InsertKeyCombo(0x2A, Data);
-			break;
+			return 1;
 		case POUND:
 			Keypad_InsertKeyCombo(0x23, Data);
-			break;
+			return 1;
 	}
+	return 0;
 }
 
 
@@ -130,4 +131,17 @@ void Keypad_Execute(SensorData * Data) {
 	if (Keypad_Debounce()) {
 		Keypad_SaveButtonPress(*KeypadState, Data);
 	}
+}
+
+void Keypad_ExecuteForPinEnter(SensorData * Data, int * Count) {
+	Keypad_Scan();
+
+		if (Keypad_Debounce()) {
+			if (Keypad_SaveButtonPress(*KeypadState, Data)) {
+				if (Data->KeyCombo[0] != '#' && Data->KeyCombo[0] != '*') {
+					Data->EnteredPIN[*Count] = Data->KeyCombo[0];
+					(*Count)++;
+				}
+			}
+		}
 }

@@ -42,13 +42,21 @@ typedef struct {
    double Photoresistor;
    uint16_t PhotoresistorADC;
    uint16_t LEDDutyCycle;
+   char SavedPIN[4];
+   char EnteredPIN[4];
 
    enum SystemState
    {
        SETUP,
 		MAIN,
-		MENU
+		MENU,
+		ENTERPIN,
+		SETPIN,
+		SETTIME,
+		TOGGLELOCK
    } State;
+
+   enum ArmedStatus { NOTARMED, ARMED } ArmedStatus;
 
    uint16_t Temperature;
    uint16_t TempDecimal;

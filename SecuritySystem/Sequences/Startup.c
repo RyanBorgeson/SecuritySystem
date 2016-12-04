@@ -31,6 +31,7 @@ void Startup_Sequence(SensorData * Data) {
 
 	// Initialize additional modules.
 	RGB_Init();
+	RGB_Module_SetColor(GREEN);
 
 	Keypad_Init(Data);
 
@@ -46,6 +47,12 @@ void Startup_Sequence(SensorData * Data) {
 	TIMER_A0->CCR[0] = 8192;
 	TIMER_A0->CTL = TIMER_A_CTL_SSEL__ACLK | TIMER_A_CTL_MC__UP;
 	Interrupt_registerInterrupt(TA0_0_IRQn, TA0_0_IRQHandler(Data));
+
+
+	Data->SavedPIN[0] = '1';
+	Data->SavedPIN[1] = '2';
+	Data->SavedPIN[2] = '3';
+	Data->SavedPIN[3] = '4';
 
 	//Interrupt_enableInterrupt(INT_EUSCIB1);
 

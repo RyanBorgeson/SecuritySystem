@@ -11,7 +11,7 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 	}
 }
 
-
+/* MAIN SCREEN */
 void Display_Module_MainScreen(SensorData * Data) {
 	char Time[100];
 	//volatile char * getseconds = ConvertBCDToString(RTC_registers[0]);
@@ -34,8 +34,36 @@ void Display_Clear_Screen(void) {
 	ST7735_FillScreen(0x0000);
 }
 
+/* MENU */
 void Display_Menu(SensorData * Data) {
-	Display_Module_DrawString("* BACK", ST7735_Color565(235, 107, 107), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("Options", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 10, 2, 12);
+
+	Display_Module_DrawString("1. Set PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 40, 1, 7);
+	Display_Module_DrawString("2. Set Time & Date", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 55, 1, 7);
+	Display_Module_DrawString("3. Unlock / Lock", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 70, 1, 7);
+
+
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20, 1, 7);
+}
+
+/* ENTER PIN */
+void Display_Module_EnterPIN(SensorData * Data, int Digits) {
+	Display_Module_DrawString("Enter PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
+
+
+	ST7735_FillRect(5, 50, 25, 25, ST7735_Color565(255, 255, 255));
+	ST7735_FillRect(45, 50, 25, 25, ST7735_Color565(255, 255, 255));
+	ST7735_FillRect(85, 50, 25, 25, ST7735_Color565(255, 255, 255));
+	ST7735_FillRect(125, 50, 25, 25, ST7735_Color565(255, 255, 255));
+
+	int i;
+	for (i = 0; i < Digits; i++) {
+		ST7735_DrawChar(12 + (i * 40), 54, '*', ST7735_Color565(0, 0, 0), ST7735_Color565(255, 255, 255), 2);
+	}
+
+
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20, 1, 7);
+
 }
 
 void Display_Refresh(SensorData * Data) {

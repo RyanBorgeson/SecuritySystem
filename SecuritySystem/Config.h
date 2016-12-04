@@ -59,4 +59,7 @@ volatile uint32_t ClockRegisters[19];
 
 uint8_t RefreshInterrupt;
 
+uint8_t SavedPIN[4], EnteredPIN[4];
+
+
 

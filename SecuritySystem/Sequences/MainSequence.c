@@ -9,6 +9,7 @@ const Timer_A_ContinuousModeConfig timeraConfig =
 	TIMER_A_DO_CLEAR
 };
 
+volatile int CurrentDigit = 0;
 
 void Main_Sequence(SensorData * Data) {
 
@@ -17,6 +18,9 @@ void Main_Sequence(SensorData * Data) {
 	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
 	Display_Clear_Screen();						// Clears screen.
 
+	// Holds the current digit entered for a pin.
+
+	volatile char PreviousKeyCombo;
 
 	while(1) {
 
@@ -28,6 +32,8 @@ void Main_Sequence(SensorData * Data) {
 		switch(Data->State) {
 
 			case MAIN:
+			{
+				Keypad_Execute(Data);
 
 				// Only execute ever second.
 				if (PreviousSecond != ClockRegisters[SECOND]) {
@@ -35,17 +41,42 @@ void Main_Sequence(SensorData * Data) {
 					PreviousSecond = ClockRegisters[SECOND];
 				}
 
-				Keypad_Execute(Data);
 
 				if (Data->KeyCombo[0] == '#') {
 					Display_Clear_Screen();
-					Data->State = MENU;
+					Data->State = ENTERPIN;
 				}
 
 				break;
+			}
+			case ENTERPIN:
+			{
 
+				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
+
+				if (CurrentDigit == 4 && strcmp(*Data->EnteredPIN, *Data->SavedPIN) == 0) {
+					Display_Clear_Screen();
+					Data->EnteredPIN[0] = '\0';
+					Data->State = MENU;
+					CurrentDigit = 0;
+				}
+				if (CurrentDigit == 4 && strcmp(*Data->EnteredPIN, *Data->SavedPIN) != 0) {
+					Display_Clear_Screen();
+					Data->EnteredPIN[0] = '\0';
+					Data->State = MAIN;
+					CurrentDigit = 0;
+				}
+
+				// Only execute ever second.
+				if (PreviousSecond != ClockRegisters[SECOND]) {
+					Display_Module_EnterPIN(&Data, CurrentDigit);
+					PreviousSecond = ClockRegisters[SECOND];
+				}
+
+			break;
+			}
 			case MENU:
-
+			{
 				Keypad_Execute(Data);
 
 				if (PreviousSecond != ClockRegisters[SECOND]) {
@@ -54,12 +85,41 @@ void Main_Sequence(SensorData * Data) {
 					PreviousSecond = ClockRegisters[SECOND];
 				}
 
+
+				if (Data->KeyCombo[0] == '3') {
+					// TODO: Toggle unlocking or locking door.
+					RGB_Module_SetColor(RED);
+				} else if (Data->KeyCombo[0] == '2') {
+					// TODO: Set Time & Date
+				} else if (Data->KeyCombo[0] == '1') {
+					// TODO: Set PIN
+				} else {
+					RGB_Module_SetColor(GREEN);
+				}
+
+
 				if (Data->KeyCombo[0] == '*') {
 					Display_Clear_Screen();
 					Data->State = MAIN;
 				}
 
 				break;
+			}
+			case SETPIN:
+			{
+				// TODO: Set pin state.
+				break;
+			}
+			case SETTIME:
+			{
+				// TODO: Set time state.
+				break;
+			}
+			case TOGGLELOCK:
+			{
+				// TODO: Toggle lock state.
+				break;
+			}
 
 		}
 
