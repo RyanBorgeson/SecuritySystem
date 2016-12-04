@@ -13,8 +13,7 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 
 /* MAIN SCREEN */
 void Display_Module_MainScreen(SensorData * Data, int ClockX) {
-	char Time[100], Date[100];
-	//volatile char * getseconds = ConvertBCDToString(RTC_registers[0]);
+	char Time[20], Date[20], Temperature[20];
 
 	char * Hours = ConvertBCDToString(ClockRegisters[HOUR]);
 	char * Minutes =  ConvertBCDToString(ClockRegisters[MINUTE]);
@@ -22,9 +21,11 @@ void Display_Module_MainScreen(SensorData * Data, int ClockX) {
 	char * Month = ConvertBCDToString(ClockRegisters[MONTH]);
 	char * Day = ConvertBCDToString(ClockRegisters[DAY]);
 	char * Year = ConvertBCDToString(ClockRegisters[YEAR]);
+	char * Temp = ConvertBCDToString(ClockRegisters[TEMPERATURE]);
 
 	sprintf(Time, "  %s:%s:%s ", Hours, Minutes, Seconds);
 	sprintf(Date, "  %s/%s/%s  ", Month, Day, Year);
+	sprintf(Temperature, "%s Celsius", Temp);
 
 	free(Hours);
 	free(Minutes);
@@ -36,6 +37,7 @@ void Display_Module_MainScreen(SensorData * Data, int ClockX) {
 
 	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 30, 2, 12);
 	Display_Module_DrawString(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 50, 1, 7);
+	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 50, 80, 1, 7);
 	Display_Module_DrawString("# Menu", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20, 1, 7);
 }
 
@@ -59,12 +61,12 @@ void Display_Menu(SensorData * Data) {
 void Display_Module_EnterPIN(SensorData * Data, int Digits) {
 	Display_Module_DrawString("Enter PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
 
-
-	ST7735_FillRect(5, 50, 25, 25, ST7735_Color565(255, 255, 255));
-	ST7735_FillRect(45, 50, 25, 25, ST7735_Color565(255, 255, 255));
-	ST7735_FillRect(85, 50, 25, 25, ST7735_Color565(255, 255, 255));
-	ST7735_FillRect(125, 50, 25, 25, ST7735_Color565(255, 255, 255));
-
+	if (Digits == 0) {
+		ST7735_FillRect(5, 50, 25, 25, ST7735_Color565(255, 255, 255));
+		ST7735_FillRect(45, 50, 25, 25, ST7735_Color565(255, 255, 255));
+		ST7735_FillRect(85, 50, 25, 25, ST7735_Color565(255, 255, 255));
+		ST7735_FillRect(125, 50, 25, 25, ST7735_Color565(255, 255, 255));
+	}
 	int i;
 	for (i = 0; i < Digits; i++) {
 		ST7735_DrawChar(12 + (i * 40), 54, '*', ST7735_Color565(0, 0, 0), ST7735_Color565(255, 255, 255), 2);

@@ -43,7 +43,6 @@ void Main_Sequence(SensorData * Data) {
 					PreviousSecond = ClockRegisters[SECOND];
 				}
 
-
 				if (Data->KeyCombo[0] == '#') {
 					Display_Clear_Screen();
 					Data->State = ENTERPIN;
@@ -56,26 +55,27 @@ void Main_Sequence(SensorData * Data) {
 
 				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
 
+				// Only execute ever second.
+				if (RefreshInterrupt) {
+					Display_Module_EnterPIN(&Data, CurrentDigit);
+				}
+
 				int KeyComparison = EqualPins(Data->EnteredPIN, Data->SavedPIN);
 
 				if (CurrentDigit == 4 && KeyComparison) {
-					Display_Clear_Screen();
 					Data->EnteredPIN[0] = '\0';
 					Data->State = MENU;
 					CurrentDigit = 0;
+					Display_Clear_Screen();
 				}
 				if (CurrentDigit == 4 && !KeyComparison) {
-					Display_Clear_Screen();
 					Data->EnteredPIN[0] = '\0';
 					Data->State = MAIN;
 					CurrentDigit = 0;
+					Display_Clear_Screen();
 				}
 
-				// Only execute ever second.
-				if (PreviousSecond != ClockRegisters[SECOND]) {
-					Display_Module_EnterPIN(&Data, CurrentDigit);
-					PreviousSecond = ClockRegisters[SECOND];
-				}
+
 
 			break;
 			}
@@ -83,10 +83,8 @@ void Main_Sequence(SensorData * Data) {
 			{
 				Keypad_Execute(Data);
 
-				if (PreviousSecond != ClockRegisters[SECOND]) {
+				if (RefreshInterrupt) {
 					Display_Menu(Data);
-
-					PreviousSecond = ClockRegisters[SECOND];
 				}
 
 

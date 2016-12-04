@@ -17,8 +17,8 @@
 #define HOUR 2
 #define MINUTE 1
 #define SECOND 0
-#define TEMPERATURE 18
-#define TEMP_DECIMAL 19
+#define TEMPERATURE 17
+#define TEMP_DECIMAL 18
 
 /* Totals readings from the RTC Module. */
 #define TOTAL_READINGS 19
