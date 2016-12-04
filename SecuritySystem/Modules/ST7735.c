@@ -1084,6 +1084,8 @@ void ST7735_DrawCharS(int16_t x, int16_t y, char c, int16_t textColor, int16_t b
 void ST7735_DrawChar(int16_t x, int16_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size){
   uint8_t line; // horizontal row of pixels of character
   int32_t col, row, i, j;// loop indices
+
+
   if(((x + 5*size - 1) >= _width)  || // Clip right
      ((y + 8*size - 1) >= _height) || // Clip bottom
      ((x + 5*size - 1) < 0)        || // Clip left

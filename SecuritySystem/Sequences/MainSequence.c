@@ -21,11 +21,13 @@ void Main_Sequence(SensorData * Data) {
 	// Holds the current digit entered for a pin.
 
 	volatile char PreviousKeyCombo;
+	int ClockX = 0;
 
 	while(1) {
 
 		if (RefreshInterrupt) {
 			RTC_Module_Read(&Data);
+			ClockX+= 1;
 			RefreshInterrupt = 0;
 		}
 
@@ -36,8 +38,8 @@ void Main_Sequence(SensorData * Data) {
 				Keypad_Execute(Data);
 
 				// Only execute ever second.
-				if (PreviousSecond != ClockRegisters[SECOND]) {
-					Display_Module_MainScreen(&Data);
+				if (RefreshInterrupt) {
+					Display_Module_MainScreen(&Data, ClockX);
 					PreviousSecond = ClockRegisters[SECOND];
 				}
 
@@ -54,13 +56,13 @@ void Main_Sequence(SensorData * Data) {
 
 				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
 
-				if (CurrentDigit == 4 && strcmp(*Data->EnteredPIN, *Data->SavedPIN) == 0) {
+				if (CurrentDigit == 4 && strcmp(Data->EnteredPIN, Data->SavedPIN) == 0) {
 					Display_Clear_Screen();
 					Data->EnteredPIN[0] = '\0';
 					Data->State = MENU;
 					CurrentDigit = 0;
 				}
-				if (CurrentDigit == 4 && strcmp(*Data->EnteredPIN, *Data->SavedPIN) != 0) {
+				if (CurrentDigit == 4 && strcmp(Data->EnteredPIN, Data->SavedPIN) != 0) {
 					Display_Clear_Screen();
 					Data->EnteredPIN[0] = '\0';
 					Data->State = MAIN;

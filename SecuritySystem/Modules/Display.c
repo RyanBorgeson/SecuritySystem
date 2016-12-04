@@ -7,26 +7,35 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 	int i;
 
 	for (i = 0; i < strlen(String); i++) {
-		ST7735_DrawChar(x + (i * spacing), y, String[i], Color, Background, size);
+		ST7735_DrawChar(((x + (i * spacing)) % 145), y, String[i], Color, Background, size);
 	}
 }
 
 /* MAIN SCREEN */
-void Display_Module_MainScreen(SensorData * Data) {
-	char Time[100];
+void Display_Module_MainScreen(SensorData * Data, int ClockX) {
+	char Time[100], Date[100];
 	//volatile char * getseconds = ConvertBCDToString(RTC_registers[0]);
 
 	char * Hours = ConvertBCDToString(ClockRegisters[HOUR]);
 	char * Minutes =  ConvertBCDToString(ClockRegisters[MINUTE]);
 	char * Seconds =  ConvertBCDToString(ClockRegisters[SECOND]);
+	char * Month = ConvertBCDToString(ClockRegisters[MONTH]);
+	char * Day = ConvertBCDToString(ClockRegisters[DAY]);
+	char * Year = ConvertBCDToString(ClockRegisters[YEAR]);
 
-	sprintf(Time, "%s:%s:%s", Hours, Minutes, Seconds);
+	sprintf(Time, "  %s:%s:%s ", Hours, Minutes, Seconds);
+	sprintf(Date, "  %s/%s/%s  ", Month, Day, Year);
 
 	free(Hours);
 	free(Minutes);
 	free(Seconds);
+	free(Month);
+	free(Day);
+	free(Year);
 
-	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 40, 2, 18);
+
+	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 30, 2, 12);
+	Display_Module_DrawString(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 50, 1, 7);
 	Display_Module_DrawString("# Menu", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20, 1, 7);
 }
 
