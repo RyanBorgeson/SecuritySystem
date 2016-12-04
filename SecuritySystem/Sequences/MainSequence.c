@@ -1,36 +1,77 @@
 #include "MainSequence.h"
 
 
+const Timer_A_ContinuousModeConfig timeraConfig =
+{
+	TIMER_A_CLOCKSOURCE_ACLK,
+	TIMER_A_CLOCKSOURCE_DIVIDER_1,
+	TIMER_A_TAIE_INTERRUPT_ENABLE,
+	TIMER_A_DO_CLEAR
+};
+
 
 void Main_Sequence(SensorData * Data) {
 
-
-	int PreviousSecond = Data->RTC[SECOND];
-
-	Display_Module_MainScreen(&Data);
+	// Main sequence settings.
+	Data->State = MAIN;							// Setup the state of the system.
+	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
+	Display_Clear_Screen();						// Clears screen.
 
 
 	while(1) {
 
-		Keypad_Scan();
-
-
-		if (Keypad_Debounce()) {
-			GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN0);
+		if (RefreshInterrupt) {
+			RTC_Module_Read(&Data);
+			RefreshInterrupt = 0;
 		}
 
-		// Read startup time from RTC.
-		//RTC_Module_Read(Data);
+		switch(Data->State) {
 
-		if (Data->RTC[SECOND] != PreviousSecond) {
-			Display_Refresh();
+			case MAIN:
 
-			PreviousSecond = Data->RTC[SECOND];
+				// Only execute ever second.
+				if (PreviousSecond != ClockRegisters[SECOND]) {
+					Display_Module_MainScreen(&Data);
+					PreviousSecond = ClockRegisters[SECOND];
+				}
+
+				Keypad_Execute(Data);
+
+				if (Data->KeyCombo[0] == '#') {
+					Display_Clear_Screen();
+					Data->State = MENU;
+				}
+
+				break;
+
+			case MENU:
+
+				Keypad_Execute(Data);
+
+				if (PreviousSecond != ClockRegisters[SECOND]) {
+					Display_Menu(Data);
+
+					PreviousSecond = ClockRegisters[SECOND];
+				}
+
+				if (Data->KeyCombo[0] == '*') {
+					Display_Clear_Screen();
+					Data->State = MAIN;
+				}
+
+				break;
+
 		}
 
-
-		//SysTick_delay(50);
 	}
+}
 
 
+
+void TA0_0_IRQHandler(SensorData * Data) {
+
+	RefreshInterrupt = 1;
+
+    // Clear the compare interrupt flag
+    TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;
 }

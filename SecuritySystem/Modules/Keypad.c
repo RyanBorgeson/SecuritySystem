@@ -8,6 +8,18 @@ void Keypad_Init(SensorData * Data) {
 
 	GPIO_setAsInputPin(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
 
+	//MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7, GPIO_HIGH_TO_LOW_TRANSITION);
+	////MAP_GPIO_clearInterruptFlag(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
+	//MAP_GPIO_enableInterrupt(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
+
+
+	//Interrupt_registerInterrupt(PORT2_IRQn, PORT2_IRQHandler(Data));
+	//Interrupt_enableInterrupt(INT_PORT2);
+
+	//MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P5, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2, GPIO_HIGH_TO_LOW_TRANSITION);
+	//MAP_GPIO_enableInterrupt(GPIO_PORT_P5, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
+	//MAP_GPIO_clearInterruptFlag(GPIO_PORT_P5, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
+
 }
 
 /**
@@ -20,21 +32,21 @@ void Keypad_Scan(void) {
 
 	P5->DIR |= BIT0;		// Set column C0 to output, and others to remain high Z. (PIN 5.0)
 	P5->OUT &= ~BIT0;		// Set column C0 to LOW.
-	__delay_cycles(20);
+	__delay_cycles(10);
 
 	KeypadState[idx] = (P2IN & 0xF0) >> 4;	// Read all row pins (P2.7, P2.6, P2.5, P2.4) when C0 is LOW.
 
 	P5->DIR &= ~BIT0;		// Set column C0 back to input (high Z)
 	P5->DIR |= BIT1;		// Set column C1 to ouptput, other columns remain high Z. (PIN 5.1)
 	P5->OUT &= ~BIT1;		// Set column C1 to LOW.
-	__delay_cycles(20);
+	__delay_cycles(10);
 
 	KeypadState[idx] = (KeypadState[idx] << 4) | (P2IN & 0xF0) >> 4; 	// Read all row pins when C1 is LOW.
 
 	P5->DIR &= ~BIT1;		// Set column C1 back to input (high Z).
 	P5->DIR |= BIT2;		// Set column C2 to output, other columns remain high Z. (PIN 5.2)
 	P5->OUT &= ~BIT2;		// Set column C2 to LOW.
-	__delay_cycles(20);
+	__delay_cycles(10);
 
 	KeypadState[idx] = (KeypadState[idx] << 4) | (P2IN & 0xF0) >> 4;
 
@@ -42,23 +54,23 @@ void Keypad_Scan(void) {
 	if (++idx >= 10) idx = 0;
 }
 
-int Keypad_Debounce()
-{
-    static uint16_t DebounceState = 0; // Current debounce status
-    DebounceState = (DebounceState << 1) | (P5IN & 0x0F) >> 1;
-    if (DebounceState == 0xfc00) return 1;
-    return 0;
+int Keypad_Debounce(void) {
+	static uint16_t DebounceState = 0; // Current debounce status
+	DebounceState = (DebounceState << 1) | ((P5IN & 0xF0) >> 1) | 0xf800;
+	if(DebounceState == 0xfc00) return 1;
+	return 0;
 }
 
 
 
-void Keypad_SaveButtonPress(uint16_t State, SensorData * Data) {
-	switch (State) {
+void Keypad_SaveButtonPress(uint16_t PressedKey, SensorData * Data) {
+
+	switch (PressedKey) {
 		case ONE:
-			Keypad_InsertKeyCombo(0x31, Data);
+			Keypad_InsertKeyCombo('1', Data);
 			break;
 		case TWO:
-			Keypad_InsertKeyCombo(0x32, Data);
+			Keypad_InsertKeyCombo('2', Data);
 			break;
 		case THREE:
 			Keypad_InsertKeyCombo(0x33, Data);
@@ -94,6 +106,8 @@ void Keypad_SaveButtonPress(uint16_t State, SensorData * Data) {
 }
 
 
+
+
 void Keypad_InsertKeyCombo(char Key, SensorData * Data) {
 	uint8_t KeyCombinations[4][3] = {
 			{ 0x2A, 0x30, 0x23 },
@@ -109,3 +123,11 @@ void Keypad_InsertKeyCombo(char Key, SensorData * Data) {
 
 }
 
+
+void Keypad_Execute(SensorData * Data) {
+	Keypad_Scan();
+
+	if (Keypad_Debounce()) {
+		Keypad_SaveButtonPress(*KeypadState, Data);
+	}
+}

@@ -43,13 +43,22 @@ typedef struct {
    uint16_t PhotoresistorADC;
    uint16_t LEDDutyCycle;
 
+   enum SystemState
+   {
+       SETUP,
+		MAIN,
+		MENU
+   } State;
+
    uint16_t Temperature;
    uint16_t TempDecimal;
    uint16_t Proximity[NUM_PROXIMITY_SENSORS];
    uint8_t HallEffect[NUM_HALLEFFECT_SENSORS];
    char KeyCombo[4];
 
-   uint16_t RTC[19];
+
+   uint8_t Refresh;
+   uint32_t RTC[19];
    DateTime DateTime;
    RGB_LED LED;
 } SensorData;

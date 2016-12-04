@@ -16,10 +16,9 @@ volatile uint32_t SMCLKClockSpeed;
 volatile uint32_t ACLKClockSpeed;
 
 int main(void) {
-
+	WDT_A_holdTimer();
 
 	Startup_Sequence(&SensorReadings);
-
 
 	// Load main program sequence assuming startup passes all
 	// initialization tests.

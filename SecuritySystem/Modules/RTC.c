@@ -1,6 +1,5 @@
 #include "RTC.h"
 
-
 void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second) {
 	// Set Master in transmit mode.
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
@@ -26,6 +25,7 @@ void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Da
 
 
 void RTC_Module_Read(SensorData * Data) {
+
 	// Set Master in transmit mode.
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
 	// Wait for bus release, ready to write.
@@ -39,7 +39,7 @@ void RTC_Module_Read(SensorData * Data) {
 	// Wait for bus release, ready to receive.
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
 
-
+/*
 	// Read time, date, and temperature from RTC registers.
 	// DateTime type definition that holds the returned data.
 	DateTime Now;
@@ -64,61 +64,25 @@ void RTC_Module_Read(SensorData * Data) {
 
 	// Add date and time to the data object.
 	Data->DateTime = Now;
-}
+*/
+	ClockRegisters[0]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[1]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[2]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[3]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[4]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[5]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[6]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[7]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[8]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[9]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[10]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[11]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[12]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[13]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[14]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[15]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[16]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[17]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
+	ClockRegisters[18]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
 
-void RTC_Init(void) {
-
-	GPIO_setAsInputPin(GPIO_PORT_P6, GPIO_PIN7);
-
-	MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P6, GPIO_PIN7, GPIO_HIGH_TO_LOW_TRANSITION);
-	MAP_GPIO_clearInterruptFlag(GPIO_PORT_P6, GPIO_PIN7);
-	MAP_GPIO_enableInterrupt(GPIO_PORT_P6, GPIO_PIN7);
-
-
-	RTC_Setup_SecondInterrupts();
-	RTC_ClearTimer_Interrupt_Flag();
-}
-
-
-void RTC_Setup_SecondInterrupts(void) {
-
-	// Set Master in transmit mode.
-	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
-	// Wait for bus release, ready to write.
-	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
-
-	// Setup RTC to trigger an interrupt every second.
-	// Start A1M4, A1M3, A1M2, A1M1 by setting them to one.
-	MAP_I2C_masterSendMultiByteStart(EUSCI_B1_BASE, 0x07);
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x01);
-
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
-
-	MAP_I2C_masterSendMultiByteFinish(EUSCI_B1_BASE, 0b00011101);
-}
-
-void RTC_ClearTimer_Interrupt_Flag(void) {
-	// Set Master in transmit mode.
-	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
-	// Wait for bus release, ready to write.
-	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
-
-	MAP_I2C_masterSendMultiByteStart(EUSCI_B1_BASE, 0x0F);
-	MAP_I2C_masterSendMultiByteFinish(EUSCI_B1_BASE, 0b10001000);
-}
-
-/* Port1 ISR */
-void PORT6_IRQHandler(void)
-{
-    // Toggling the output on the LED
-    if(P6->IFG & BIT7)
-    	GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
-
-    GPIO_clearInterruptFlag(GPIO_PORT_P6, GPIO_PIN7);
-    RTC_ClearTimer_Interrupt_Flag();
 }
