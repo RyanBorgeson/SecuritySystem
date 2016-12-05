@@ -49,7 +49,6 @@ void Main_Sequence(SensorData * Data) {
 				// Only execute ever second.
 				if (RefreshInterrupt) {
 					Display_Module_MainScreen(&Data, ClockX);
-					PreviousSecond = ClockRegisters[SECOND];
 				}
 
 				if (Data->KeyCombo[0] == '#') {
@@ -125,6 +124,9 @@ void Main_Sequence(SensorData * Data) {
 					// TODO: Set PIN
 					Display_Clear_Screen();
 					Data->State = SETPIN;
+				} else if (Data->KeyCombo[0] == '4') {
+					Display_Clear_Screen();
+					Data->State = VIEWLOGS;
 				} else {
 					RGB_Module_SetColor(GREEN);
 				}
@@ -202,9 +204,27 @@ void Main_Sequence(SensorData * Data) {
 
 				break;
 			}
+			case VIEWLOGS:
+			{
+				// TODO: Set time state.
+				Keypad_Execute(Data);
+
+				if (PreviousSecond != ClockRegisters[SECOND]) {
+					Display_Module_ViewLogs(Data);
+					PreviousSecond = ClockRegisters[SECOND];
+				}
+
+				// Pressing the * will return users to the menu.
+				if (Data->KeyCombo[0] == '*') {
+					Display_Clear_Screen();
+					Data->KeyCombo[0] = '\0';
+					Data->State = MENU;
+				}
+
+				break;
+			}
 			case TOGGLELOCK:
 			{
-				// TODO: Toggle lock state.
 				break;
 			}
 

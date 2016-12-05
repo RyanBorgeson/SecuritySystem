@@ -133,6 +133,32 @@ void Display_Module_SetTime(SensorData * Data, int Digits, int SetTimeCounter) {
 }
 
 
+/* View Logs */
+void Display_Module_ViewLogs(SensorData * Data) {
+
+	Display_Module_DrawString("View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
+
+
+	int i = 0;
+	for (i = 0; i < 5; i++) {
+		char TimeLog[25];
+		sprintf(TimeLog, "%s:%s:%s %s/%s/%s", ConvertBCDToString(Data->FlashStorage.DateInformation[i][0]),
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][1]),
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][2]),
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][3]),
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][4]),
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][5]));
+
+		Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 15), 1, 7);
+		free(TimeLog);
+	}
+
+
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+
+}
+
+
 
 void Display_Refresh(SensorData * Data) {
 	Display_Module_DrawString("test", ST7735_Color565(235, 107, 107), ST7735_Color565(32, 36, 39), 7, SCREEN_HEIGHT - 13, 1, 7);
