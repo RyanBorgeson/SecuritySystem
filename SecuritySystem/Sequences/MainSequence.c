@@ -18,6 +18,9 @@ void Main_Sequence(SensorData * Data) {
 	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
 	Display_Clear_Screen();						// Clears screen.
 
+
+
+
 	// Holds the current digit entered for a pin.
 
 	volatile char PreviousKeyCombo;
@@ -57,6 +60,7 @@ void Main_Sequence(SensorData * Data) {
 
 				// Only execute ever second.
 				if (RefreshInterrupt) {
+
 					Display_Module_EnterPIN(&Data, CurrentDigit);
 				}
 
@@ -75,12 +79,19 @@ void Main_Sequence(SensorData * Data) {
 					Display_Clear_Screen();
 				}
 
-
+				if (Data->KeyCombo[0] == '*') {
+					CurrentDigit = 0;
+					Display_Clear_Screen();
+					Data->State = MAIN;
+				}
 
 			break;
 			}
 			case MENU:
 			{
+				// Determine if an options have already been chosen.
+				uint8_t ToggleOptions = 0;
+
 				Keypad_Execute(Data);
 
 				if (RefreshInterrupt) {
@@ -91,10 +102,21 @@ void Main_Sequence(SensorData * Data) {
 				if (Data->KeyCombo[0] == '3') {
 					// TODO: Toggle unlocking or locking door.
 					RGB_Module_SetColor(RED);
+
+					Flash_Module_PushDateTimeUp(&Data->FlashStorage.DateInformation);
+					Flash_Module_SaveToFlash(&Data->FlashStorage);
+
+					// Ensures that this state does not get toggle again.
+					Data->KeyCombo[0] = '\0;';
+
 				} else if (Data->KeyCombo[0] == '2') {
 					// TODO: Set Time & Date
+					Display_Clear_Screen();
+					Data->State = SETTIME;
 				} else if (Data->KeyCombo[0] == '1') {
 					// TODO: Set PIN
+					Display_Clear_Screen();
+					Data->State = SETPIN;
 				} else {
 					RGB_Module_SetColor(GREEN);
 				}
@@ -110,11 +132,41 @@ void Main_Sequence(SensorData * Data) {
 			case SETPIN:
 			{
 				// TODO: Set pin state.
+				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
+
+				if (RefreshInterrupt) {
+					Display_Module_SetPIN(Data, CurrentDigit);
+				}
+
+				if (CurrentDigit == 4) {
+					strncpy(Data->SavedPIN, Data->EnteredPIN, sizeof(Data->SavedPIN));
+					strncpy(Data->FlashStorage.SavedPIN, Data->EnteredPIN, sizeof(Data->SavedPIN));
+					Flash_Module_SaveToFlash(&Data->FlashStorage);
+					CurrentDigit = 0;
+					Display_Clear_Screen();
+					Data->State = MAIN;
+				}
+
 				break;
 			}
 			case SETTIME:
 			{
 				// TODO: Set time state.
+				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
+
+				if (RefreshInterrupt) {
+					Display_Module_SetTime(Data, CurrentDigit);
+				}
+
+
+				// Pressing the * will return users to the menu.
+				if (Data->KeyCombo[0] == '*') {
+					Data->KeyCombo[0] = '\0';
+					CurrentDigit = 0;
+					Display_Clear_Screen();
+					Data->State = MENU;
+				}
+
 				break;
 			}
 			case TOGGLELOCK:

@@ -33,6 +33,20 @@ typedef struct {
 	uint8_t Blue;
 } RGB_LED;
 
+
+
+/**
+ * Saved information contains all information that will be saved into the flash
+ * storage. Such as the saved PIN and previous disarm logs and times.
+ * This information will be loaded into ram once the device is turned on.
+ */
+typedef struct {
+	char SavedPIN[4];
+	uint8_t DateInformation[5][6];
+} SavedInformation;
+
+
+
 /**
  * Main Sensor data structure that combines all nested structures that allow
  * for all sensor readings and data to be access from one globally variable.
@@ -53,7 +67,8 @@ typedef struct {
 		ENTERPIN,
 		SETPIN,
 		SETTIME,
-		TOGGLELOCK
+		TOGGLELOCK,
+		VIEWLOGS
    } State;
 
    enum ArmedStatus { NOTARMED, ARMED } ArmedStatus;
@@ -69,6 +84,11 @@ typedef struct {
    uint32_t RTC[19];
    DateTime DateTime;
    RGB_LED LED;
+
+   SavedInformation FlashStorage;
+
 } SensorData;
+
+
 
 #endif

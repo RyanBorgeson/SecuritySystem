@@ -39,6 +39,9 @@ void Startup_Sequence(SensorData * Data) {
 	Display_Splash_Screen();
 
 
+	/* Setup and reading information from flash. */
+	Flash_Module_Read(&Data->FlashStorage);
+	strcpy(Data->SavedPIN, Data->FlashStorage.SavedPIN);
 
 
 	NVIC->ISER[0] = 1 << ((TA0_0_IRQn) & 31);
@@ -49,10 +52,6 @@ void Startup_Sequence(SensorData * Data) {
 	Interrupt_registerInterrupt(TA0_0_IRQn, TA0_0_IRQHandler(Data));
 
 
-	Data->SavedPIN[0] = '1';
-	Data->SavedPIN[1] = '2';
-	Data->SavedPIN[2] = '3';
-	Data->SavedPIN[3] = '4';
 
 	//Interrupt_enableInterrupt(INT_EUSCIB1);
 

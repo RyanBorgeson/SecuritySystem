@@ -10,7 +10,6 @@
 
 SensorData SensorReadings;
 
-
 volatile uint32_t MCLKClockSpeed;
 volatile uint32_t SMCLKClockSpeed;
 volatile uint32_t ACLKClockSpeed;

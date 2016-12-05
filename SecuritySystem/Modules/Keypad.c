@@ -7,6 +7,7 @@ void Keypad_Init(SensorData * Data) {
 
 
 	GPIO_setAsInputPin(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
+	GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 
 	//MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7, GPIO_HIGH_TO_LOW_TRANSITION);
 	////MAP_GPIO_clearInterruptFlag(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
@@ -54,11 +55,12 @@ void Keypad_Scan(void) {
 	if (++idx >= 10) idx = 0;
 }
 
-int Keypad_Debounce(void) {
-	static uint16_t DebounceState = 0; // Current debounce status
-	DebounceState = (DebounceState << 1) | ((P5IN & 0xF0) >> 1) | 0xf800;
-	if(DebounceState == 0xfc00) return 1;
+uint8_t Keypad_Debounce(void) {
+	static uint32_t KeypadDebounceState = 0;
+	KeypadDebounceState = (KeypadDebounceState << 1) | (P5IN & 0xE0) >> 1 | 0xf8000000;
+	if (KeypadDebounceState == 0xfc000000) return 1;
 	return 0;
+
 }
 
 
@@ -138,10 +140,11 @@ void Keypad_ExecuteForPinEnter(SensorData * Data, int * Count) {
 
 		if (Keypad_Debounce()) {
 			if (Keypad_SaveButtonPress(*KeypadState, Data)) {
-				if (Data->KeyCombo[0] != '#' && Data->KeyCombo[0] != '*') {
+				if (Data->KeyCombo[0] != '#') {
 					Data->EnteredPIN[*Count] = Data->KeyCombo[0];
 					(*Count)++;
 				}
 			}
 		}
 }
+

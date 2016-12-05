@@ -36,6 +36,9 @@
 #define HALL_EFFECT_PIN_1 GPIO_PIN0
 #define HALL_EFFECT_PIN_2 GPIO_PIN1
 
+/* Calibration start or starting flash address. */
+#define CALIBRATION_START 0x000200000
+
 
 #define ONE 2047
 #define TWO 3967
