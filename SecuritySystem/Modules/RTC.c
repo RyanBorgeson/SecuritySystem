@@ -1,6 +1,6 @@
 #include "RTC.h"
 
-void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second) {
+void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second) {
 	// Set Master in transmit mode.
 	MAP_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
 	// Wait for bus release, ready to write.
@@ -14,9 +14,9 @@ void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Da
 	// Write to hours register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Hour);
 	// Write to day register.
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Day);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, 0x00);
 	// Write to date register.
-	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, DayOfWeek);
+	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Day);
 	// Write to months register.
 	MAP_I2C_masterSendMultiByteNext(EUSCI_B1_BASE, Month);
 	// Write to year register and send stop.

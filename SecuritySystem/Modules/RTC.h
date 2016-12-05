@@ -36,7 +36,7 @@
  * @param Minute The minute.
  * @param Second The seconds.
  */
-void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t DayOfWeek, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second);
+void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second);
 
 
 /**

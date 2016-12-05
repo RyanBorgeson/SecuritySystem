@@ -47,7 +47,7 @@ void Startup_Sequence(SensorData * Data) {
 	NVIC->ISER[0] = 1 << ((TA0_0_IRQn) & 31);
 	TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;
 	TIMER_A0->CCTL[0] = TIMER_A_CCTLN_CCIE; // TACCR0 interrupt enabled
-	TIMER_A0->CCR[0] = 256;
+	TIMER_A0->CCR[0] = 1024;
 	TIMER_A0->CTL = TIMER_A_CTL_SSEL__ACLK | TIMER_A_CTL_MC__UP;
 	Interrupt_registerInterrupt(TA0_0_IRQn, TA0_0_IRQHandler(Data));
 

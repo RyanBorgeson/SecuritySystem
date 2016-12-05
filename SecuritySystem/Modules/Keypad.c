@@ -33,21 +33,21 @@ void Keypad_Scan(void) {
 
 	P5->DIR |= BIT0;		// Set column C0 to output, and others to remain high Z. (PIN 5.0)
 	P5->OUT &= ~BIT0;		// Set column C0 to LOW.
-	__delay_cycles(10);
+	__delay_cycles(15);
 
 	KeypadState[idx] = (P2IN & 0xF0) >> 4;	// Read all row pins (P2.7, P2.6, P2.5, P2.4) when C0 is LOW.
 
 	P5->DIR &= ~BIT0;		// Set column C0 back to input (high Z)
 	P5->DIR |= BIT1;		// Set column C1 to ouptput, other columns remain high Z. (PIN 5.1)
 	P5->OUT &= ~BIT1;		// Set column C1 to LOW.
-	__delay_cycles(10);
+	__delay_cycles(15);
 
 	KeypadState[idx] = (KeypadState[idx] << 4) | (P2IN & 0xF0) >> 4; 	// Read all row pins when C1 is LOW.
 
 	P5->DIR &= ~BIT1;		// Set column C1 back to input (high Z).
 	P5->DIR |= BIT2;		// Set column C2 to output, other columns remain high Z. (PIN 5.2)
 	P5->OUT &= ~BIT2;		// Set column C2 to LOW.
-	__delay_cycles(10);
+	__delay_cycles(15);
 
 	KeypadState[idx] = (KeypadState[idx] << 4) | (P2IN & 0xF0) >> 4;
 
@@ -56,11 +56,10 @@ void Keypad_Scan(void) {
 }
 
 uint8_t Keypad_Debounce(void) {
-	static uint32_t KeypadDebounceState = 0;
-	KeypadDebounceState = (KeypadDebounceState << 1) | (P5IN & 0xE0) >> 1 | 0xf8000000;
-	if (KeypadDebounceState == 0xfc000000) return 1;
+	static uint16_t KeypadDebounceState = 0;
+	KeypadDebounceState = (KeypadDebounceState << 1) | (P5IN & 0xE0) >> 1 | 0xf800;
+	if (KeypadDebounceState == 0xfc00) return 1;
 	return 0;
-
 }
 
 
@@ -132,6 +131,7 @@ void Keypad_Execute(SensorData * Data) {
 
 	if (Keypad_Debounce()) {
 		Keypad_SaveButtonPress(*KeypadState, Data);
+
 	}
 }
 

@@ -11,12 +11,18 @@ const Timer_A_ContinuousModeConfig timeraConfig =
 
 volatile int CurrentDigit = 0;
 
+// Used specifically for handling set time and date.
+uint8_t SetDateTime[6] = { 0, 0, 0, 0, 0, 0 };
+int SetTimeCounter = 0, PreviousDigit = 0;
+char SetTimeDigits[2];
+
 void Main_Sequence(SensorData * Data) {
 
 	// Main sequence settings.
 	Data->State = MAIN;							// Setup the state of the system.
 	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
 	Display_Clear_Screen();						// Clears screen.
+
 
 
 
@@ -113,6 +119,8 @@ void Main_Sequence(SensorData * Data) {
 					// TODO: Set Time & Date
 					Display_Clear_Screen();
 					Data->State = SETTIME;
+					Data->KeyCombo[0] = '0';
+					Data->KeyCombo[1] = '0';
 				} else if (Data->KeyCombo[0] == '1') {
 					// TODO: Set PIN
 					Display_Clear_Screen();
@@ -151,16 +159,41 @@ void Main_Sequence(SensorData * Data) {
 			}
 			case SETTIME:
 			{
+
+
+
 				// TODO: Set time state.
 				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
 
 				if (RefreshInterrupt) {
-					Display_Module_SetTime(Data, CurrentDigit);
+					Display_Module_SetTime(Data, CurrentDigit, SetTimeCounter);
+				}
+
+				if (CurrentDigit == 2) {
+					Display_Module_SetTime(Data, CurrentDigit, SetTimeCounter);
+					SetDateTime[SetTimeCounter] = ((Data->KeyCombo[1] - 48) << 4) | (Data->KeyCombo[0] - 48);
+
+					Data->KeyCombo[0] = '0';
+					Data->KeyCombo[1] = '0';
+					SysTick_delay(20000);
+
+					CurrentDigit = 0;
+					SetTimeCounter++;
+				}
+
+				if (SetTimeCounter == 6) {
+					RTC_Module_Write(SetDateTime[5], SetDateTime[4], SetDateTime[3], SetDateTime[2], SetDateTime[1], SetDateTime[0]);
+					SetTimeCounter = 0;
+					Data->KeyCombo[0] = '\0';
+					CurrentDigit = 0;
+					Display_Clear_Screen();
+					Data->State = MAIN;
 				}
 
 
 				// Pressing the * will return users to the menu.
 				if (Data->KeyCombo[0] == '*') {
+					SetTimeCounter = 0;
 					Data->KeyCombo[0] = '\0';
 					CurrentDigit = 0;
 					Display_Clear_Screen();

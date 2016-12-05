@@ -102,12 +102,31 @@ void Display_Module_SetPIN(SensorData * Data, int Digits) {
 
 
 /* Set Time */
-void Display_Module_SetTime(SensorData * Data, int Digits) {
+void Display_Module_SetTime(SensorData * Data, int Digits, int SetTimeCounter) {
+	char EnteredDigits[2];
+	sprintf(EnteredDigits, "%c%c", Data->KeyCombo[0], Data->KeyCombo[1]);
+
+	if (Digits == 2)
+		sprintf(EnteredDigits, "%c%c", Data->KeyCombo[1], Data->KeyCombo[0]);
+
 	Display_Module_DrawString("Set Time", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
-	Display_Module_DrawString("Enter Seconds", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
 
+	// This will change based on the set time counter.
+	// This will prompt the user for which time/date to enter.
+	if (SetTimeCounter == 0)
+		Display_Module_DrawString("Enter Seconds     ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
+	else if (SetTimeCounter == 1)
+			Display_Module_DrawString("Enter Minutes     ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
+	else if (SetTimeCounter == 2)
+			Display_Module_DrawString("Enter Hours       ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
+	else if (SetTimeCounter == 3)
+			Display_Module_DrawString("Enter Day of Month ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
+	else if (SetTimeCounter == 4)
+			Display_Module_DrawString("Enter Month (Ex: 10)", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
+	else if (SetTimeCounter == 5)
+			Display_Module_DrawString("Enter Year (Ex: 16) ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
 
-
+	Display_Module_DrawString(EnteredDigits, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 60, 60, 2, 12);
 
 	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
@@ -140,6 +159,14 @@ char * ConvertBCDToString(uint32_t BCD, char * String) {
 
 	return str;
 }
+
+
+uint8_t ConvertStringToBCD(char * String) {
+
+	uint8_t BCD = 0x00;
+	return BCD;
+}
+
 
 void Display_Splash_Screen(void) {
 
