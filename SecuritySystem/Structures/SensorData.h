@@ -71,7 +71,7 @@ typedef struct {
 		VIEWLOGS
    } State;
 
-   enum ArmedStatus { NOTARMED, ARMED } ArmedStatus;
+   enum ArmedStatus { ARMED, NOTARMED } ArmedStatus;
 
    uint16_t Temperature;
    uint16_t TempDecimal;

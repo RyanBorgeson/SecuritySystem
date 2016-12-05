@@ -25,8 +25,9 @@ void Startup_Sequence(SensorData * Data) {
 
 
 	Display_Init();
-
-
+	Proximity_Init();
+	HallEffect_Init();
+	Buzzer_Init();
 
 
 	// Initialize additional modules.
@@ -36,7 +37,11 @@ void Startup_Sequence(SensorData * Data) {
 	Keypad_Init(Data);
 
 	// Display splash screen on startup.
+	Display_Module_Backlight();
 	Display_Splash_Screen();
+
+	// Change PWM duty cycle.
+	TIMER_A1->CCR[1] = 10 * 10;
 
 
 	/* Setup and reading information from flash. */
@@ -47,7 +52,7 @@ void Startup_Sequence(SensorData * Data) {
 	NVIC->ISER[0] = 1 << ((TA0_0_IRQn) & 31);
 	TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;
 	TIMER_A0->CCTL[0] = TIMER_A_CCTLN_CCIE; // TACCR0 interrupt enabled
-	TIMER_A0->CCR[0] = 1024;
+	TIMER_A0->CCR[0] = 256;
 	TIMER_A0->CTL = TIMER_A_CTL_SSEL__ACLK | TIMER_A_CTL_MC__UP;
 	Interrupt_registerInterrupt(TA0_0_IRQn, TA0_0_IRQHandler(Data));
 

@@ -34,9 +34,15 @@ void Main_Sequence(SensorData * Data) {
 
 	while(1) {
 
+
+		GatherSensorData(Data);
+		//Alerts(Data);
+
 		if (RefreshInterrupt) {
 			RTC_Module_Read(&Data);
-			ClockX+= 1;
+			ClockX += 1;
+
+
 			RefreshInterrupt = 0;
 		}
 
@@ -44,11 +50,14 @@ void Main_Sequence(SensorData * Data) {
 
 			case MAIN:
 			{
+
 				Keypad_Execute(Data);
+
+				Data->ArmedStatus = ARMED;
 
 				// Only execute ever second.
 				if (RefreshInterrupt) {
-					Display_Module_MainScreen(&Data, ClockX);
+					Display_Module_MainScreen(Data, ClockX);
 				}
 
 				if (Data->KeyCombo[0] == '#') {
@@ -96,6 +105,8 @@ void Main_Sequence(SensorData * Data) {
 			{
 				// Determine if an options have already been chosen.
 				uint8_t ToggleOptions = 0;
+
+				Data->ArmedStatus = NOTARMED;
 
 				Keypad_Execute(Data);
 
@@ -235,9 +246,15 @@ void Main_Sequence(SensorData * Data) {
 
 
 
+
+
 void TA0_0_IRQHandler(SensorData * Data) {
 
 	RefreshInterrupt = 1;
+	RefreshInterruptCounter++;
+
+	if (RefreshInterruptCounter >= 32)
+		RefreshInterruptCounter = 0;
 
     // Clear the compare interrupt flag
     TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;
@@ -245,4 +262,18 @@ void TA0_0_IRQHandler(SensorData * Data) {
 
 int EqualPins(char * SavedPin, char * EnteredPin) {
 	return (SavedPin[0] == EnteredPin[0]) && (SavedPin[1] == EnteredPin[1]) && (SavedPin[2] == EnteredPin[2]) && (SavedPin[3] == EnteredPin[3]);
+}
+
+
+void GatherSensorData(SensorData * Data) {
+	Proximity_Module_Read(Data);
+	HallEffect_Module_Read(Data);
+}
+
+void Alerts(SensorData * Data) {
+
+	if (Data->ArmedStatus == ARMED && Data->HallEffect[0] == 1 && RefreshInterruptCounter > 28) {
+		Buzzer_Module_ToggleTone();
+	}
+
 }

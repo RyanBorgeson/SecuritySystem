@@ -202,3 +202,21 @@ void Display_Splash_Screen(void) {
 	//ST7735_FillRect(0, SCREEN_HEIGHT - 20, SCREEN_WIDTH, 20, ST7735_Color565(46, 204, 113));
 }
 
+
+
+
+/**
+ * Sets up PWM output for P7.7 and waveform settings.
+ */
+void Display_Module_Backlight(void) {
+	// Setup up pin directions and non GPIO functions on P7.7.
+	P7->DIR |= BIT7;
+	P7->SEL0 |= BIT7;
+	P7->SEL1 &= ~BIT7;
+
+	// Setup PWM Waveform. CCR1 reset/set.
+	TIMER_A1->CCR[0] = 1000 - 1;
+	TIMER_A1->CTL = TIMER_A_CTL_SSEL__SMCLK | TIMER_A_CTL_MC__UP | TIMER_A_CTL_CLR;
+	TIMER_A1->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
+}
+
