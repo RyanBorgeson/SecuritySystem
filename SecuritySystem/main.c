@@ -13,9 +13,11 @@ SensorData SensorReadings;
 volatile uint32_t MCLKClockSpeed;
 volatile uint32_t SMCLKClockSpeed;
 volatile uint32_t ACLKClockSpeed;
+volatile uint8_t test;
 
 int main(void) {
 	WDT_A_holdTimer();
+
 
 	Startup_Sequence(&SensorReadings);
 

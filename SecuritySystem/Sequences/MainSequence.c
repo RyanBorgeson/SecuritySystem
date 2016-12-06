@@ -19,24 +19,21 @@ char SetTimeDigits[2];
 void Main_Sequence(SensorData * Data) {
 
 	// Main sequence settings.
-	Data->State = MAIN;							// Setup the state of the system.
+	Data->State = MAIN;									// Setup the state of the system.
 	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
-	Display_Clear_Screen();						// Clears screen.
+	Display_Clear_Screen();								// Clears screen.
 
-
-
-
-
-	// Holds the current digit entered for a pin.
-
-	volatile char PreviousKeyCombo;
+	// Current ClockX location.
 	int ClockX = 0;
 
 	while(1) {
 
 
-		GatherSensorData(Data);
-		//Alerts(Data);
+		if (PreviousSecond != ClockRegisters[SECOND]) {
+			GatherSensorData(Data);
+			Alerts(Data);
+			PreviousSecond = ClockRegisters[SECOND];
+		}
 
 		if (RefreshInterrupt) {
 			RTC_Module_Read(&Data);
@@ -81,13 +78,13 @@ void Main_Sequence(SensorData * Data) {
 				int KeyComparison = EqualPins(Data->EnteredPIN, Data->SavedPIN);
 
 				if (CurrentDigit == 4 && KeyComparison) {
-					Data->EnteredPIN[0] = '\0';
+					Data->KeyCombo[0] = '\0';
 					Data->State = MENU;
 					CurrentDigit = 0;
 					Display_Clear_Screen();
 				}
 				if (CurrentDigit == 4 && !KeyComparison) {
-					Data->EnteredPIN[0] = '\0';
+					Data->KeyCombo[0] = '\0';
 					Data->State = MAIN;
 					CurrentDigit = 0;
 					Display_Clear_Screen();
@@ -129,8 +126,8 @@ void Main_Sequence(SensorData * Data) {
 					// TODO: Set Time & Date
 					Display_Clear_Screen();
 					Data->State = SETTIME;
-					Data->KeyCombo[0] = '0';
-					Data->KeyCombo[1] = '0';
+					Data->KeyCombo[0] = '-';
+					Data->KeyCombo[1] = '-';
 				} else if (Data->KeyCombo[0] == '1') {
 					// TODO: Set PIN
 					Display_Clear_Screen();
@@ -186,8 +183,8 @@ void Main_Sequence(SensorData * Data) {
 					Display_Module_SetTime(Data, CurrentDigit, SetTimeCounter);
 					SetDateTime[SetTimeCounter] = ((Data->KeyCombo[1] - 48) << 4) | (Data->KeyCombo[0] - 48);
 
-					Data->KeyCombo[0] = '0';
-					Data->KeyCombo[1] = '0';
+					Data->KeyCombo[0] = '-';
+					Data->KeyCombo[1] = '-';
 					SysTick_delay(20000);
 
 					CurrentDigit = 0;
@@ -270,10 +267,3 @@ void GatherSensorData(SensorData * Data) {
 	HallEffect_Module_Read(Data);
 }
 
-void Alerts(SensorData * Data) {
-
-	if (Data->ArmedStatus == ARMED && Data->HallEffect[0] == 1 && RefreshInterruptCounter > 28) {
-		Buzzer_Module_ToggleTone();
-	}
-
-}

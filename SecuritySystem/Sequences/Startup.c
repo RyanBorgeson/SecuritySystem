@@ -41,7 +41,7 @@ void Startup_Sequence(SensorData * Data) {
 	Display_Splash_Screen();
 
 	// Change PWM duty cycle.
-	TIMER_A1->CCR[1] = 10 * 10;
+	TIMER_A1->CCR[1] = 100 * 10;
 
 
 	/* Setup and reading information from flash. */

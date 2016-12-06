@@ -11,6 +11,10 @@ void RGB_Init(void) {
 	GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
 }
 
+void RGB_Module_Toggle(void) {
+	GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
+}
+
 
 void RGB_Module_SetColor(int Color) {
 
