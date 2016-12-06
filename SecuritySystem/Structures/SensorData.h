@@ -72,13 +72,11 @@ typedef struct {
    } State;
 
    enum ArmedStatus { ARMED, NOTARMED } ArmedStatus;
-
    uint16_t Temperature;
    uint16_t TempDecimal;
    uint16_t Proximity[NUM_PROXIMITY_SENSORS];
    uint8_t HallEffect[NUM_HALLEFFECT_SENSORS];
    char KeyCombo[4];
-
 
    uint8_t Refresh;
    uint32_t RTC[19];

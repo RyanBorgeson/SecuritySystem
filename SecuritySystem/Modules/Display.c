@@ -44,10 +44,15 @@ void Display_Clear_Screen(void) {
 void Display_Menu(SensorData * Data) {
 	Display_Module_DrawString("Options", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 10, 2, 12);
 
-	Display_Module_DrawString("1. Set PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 40, 1, 7);
-	Display_Module_DrawString("2. Set Time & Date", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 55, 1, 7);
-	Display_Module_DrawString("3. Unlock / Lock", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 70, 1, 7);
-	Display_Module_DrawString("4. View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 85, 1, 7);
+	Display_Module_DrawString("1. Set PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30, 1, 7);
+	Display_Module_DrawString("2. Set Time & Date", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 45, 1, 7);
+	Display_Module_DrawString("3. Unlock / Lock", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 60, 1, 7);
+	Display_Module_DrawString("4. View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 75, 1, 7);
+
+	if (Data->ArmedStatus == NOTARMED)
+		Display_Module_DrawString("5. Arm System    ", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
+	else
+		Display_Module_DrawString("5. Disarm System", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
 
 
 	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
@@ -207,3 +212,9 @@ void Display_Module_Backlight(void) {
 	TIMER_A1->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
 }
 
+
+void Display_Module_UpdateBacklight(SensorData * Data) {
+
+	// Change PWM duty cycle.
+	TIMER_A1->CCR[1] = Data->LEDDutyCycle * 10 + 25;
+}

@@ -16,9 +16,15 @@ void AmbientLight_Module_Read(SensorData * Data) {
 
 	// Control the brightness of the LED by settings
 	// the calculated duty cycle.
-	Data->LEDDutyCycle = 100 - (((Data->Photoresistor) / AMBIENT_MAX_VOLTAGE) * 100);
+	Data->LEDDutyCycle = (((Data->Photoresistor) / AMBIENT_MAX_VOLTAGE) * 100);
 
 	// Enabling/Toggling Conversion
 	MAP_ADC14_enableConversion();
 	MAP_ADC14_toggleConversionTrigger();
+}
+
+
+void AmbientLight_Module_Init(void) {
+	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P5, GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
+	GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN5);
 }

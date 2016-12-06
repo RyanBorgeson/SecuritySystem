@@ -7,6 +7,7 @@ void Startup_Sequence(SensorData * Data) {
 	// Initialize and setup clocks and systick timer.
 	Clock_Init();
 	I2C_Init();
+	ADC_Init();
 
 	SysTick_Init();
 
@@ -29,6 +30,8 @@ void Startup_Sequence(SensorData * Data) {
 	HallEffect_Init();
 	Buzzer_Init();
 	Wireless_Init();
+	AmbientLight_Module_Init();
+
 
 	// Initialize additional modules.
 	RGB_Init();
@@ -56,7 +59,7 @@ void Startup_Sequence(SensorData * Data) {
 	TIMER_A0->CTL = TIMER_A_CTL_SSEL__ACLK | TIMER_A_CTL_MC__UP;
 	Interrupt_registerInterrupt(TA0_0_IRQn, TA0_0_IRQHandler(Data));
 
-
+	Data->ArmedStatus = NOTARMED;
 
 	//Interrupt_enableInterrupt(INT_EUSCIB1);
 

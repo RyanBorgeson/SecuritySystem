@@ -30,13 +30,14 @@ void Main_Sequence(SensorData * Data) {
 			GatherSensorData(Data);
 			Alerts(Data);
 			SecondsCounter++;
+
 			//SendPostRequest(Data);
 			PreviousSecond = ClockRegisters[SECOND];
 		}
 
 
-		// Only make an api call every five seconds.
-		if (SecondsCounter == 5) {
+		// Only make an api call every three seconds.
+		if (SecondsCounter == 3) {
 			SendPostRequest(Data);
 			SecondsCounter = 0;
 		}
@@ -45,6 +46,7 @@ void Main_Sequence(SensorData * Data) {
 		// Such as update clock position and reading the new time from the RTC.
 		if (RefreshInterrupt) {
 			ClockX += 1;
+			Display_Module_UpdateBacklight(Data);
 			RTC_Module_Read(&Data);
 			RefreshInterrupt = 0;
 		}
@@ -57,8 +59,6 @@ void Main_Sequence(SensorData * Data) {
 			// up the security system.
 			case MAIN:
 			{
-				// It is assumed the system is armed when booting up.
-				Data->ArmedStatus = ARMED;
 
 				// Check for input from the keypad.
 				Keypad_Execute(Data);
@@ -127,10 +127,6 @@ void Main_Sequence(SensorData * Data) {
 				// Determine if an options have already been chosen.
 				uint8_t ToggleOptions = 0;
 
-				// Set the system in the not armed state so the alarm does not go off when
-				// the door is opened.
-				Data->ArmedStatus = NOTARMED;
-
 				// This should quite any alarms.
 				GatherSensorData(Data);
 				Alerts(Data);
@@ -174,10 +170,16 @@ void Main_Sequence(SensorData * Data) {
 					Display_Clear_Screen();
 					Data->State = VIEWLOGS;
 
-				} else {
-					RGB_Module_SetColor(GREEN);
-				}
+				} else if (Data->KeyCombo[LAST_KEY] == '5') {
 
+					Data->ArmedStatus = Data->ArmedStatus == NOTARMED ? ARMED : NOTARMED;
+					RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
+
+					// Refresh display
+					Display_Menu(Data);
+					Data->KeyCombo[LAST_KEY] = 0;
+
+				}
 				// If the user chooses to go back, bring them back to the main menu.
 				if (Data->KeyCombo[LAST_KEY] == '*') {
 					Display_Clear_Screen();
@@ -317,5 +319,6 @@ int EqualPins(char * SavedPin, char * EnteredPin) {
 void GatherSensorData(SensorData * Data) {
 	Proximity_Module_Read(Data);
 	HallEffect_Module_Read(Data);
+	AmbientLight_Module_Read(Data);
 }
 

@@ -18,6 +18,7 @@ void Wireless_Init(void) {
 	EUSCI_A2->IE &= ~0x000F; // disable interrupts
 
 
+	WireLess_OutString("AT+CWJAP=\"Android\",\"hello123\"\r\n");
 	SysTick_delay(10000);
 
 
@@ -32,6 +33,9 @@ void SendPostRequest(SensorData * Data) {
 
 	// Sensor variables.
 	char Temp[3];
+	int HallEffect1 = Data->HallEffect[0];
+	int HallEffect2 = Data->HallEffect[1];
+	int Proximity1 = Data->Proximity[0];
 
 	ConvertBCDToString(ClockRegisters[TEMPERATURE], &Temp);
 
@@ -45,28 +49,28 @@ void SendPostRequest(SensorData * Data) {
 	//sprintf(Headers, "POST /api/sensor HTTP/1.1\r\nHost: ssapi.ryanborgeson.com\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %i\r\n\r\n%s\r\n\r\n", strlen(JSONPayload), JSONPayload);
 	//sprintf(CIPSEND, "AT+CIPSEND=4,%i\r\n\r\n", (strlen(Headers) + strlen(JSONPayload) - 28));
 
-	sprintf(JSONPayload, "Temperature=%s&AmbientLight=0.7", Temp);
+	sprintf(JSONPayload, "Temperature=%s&HallEffect1=%i&HallEffect2=%i&Proximity1=%i", Temp, HallEffect1, HallEffect2, Proximity1);
 	//sprintf(Headers, "POST http://ssapi.ryanborgeson.com/api/sensor HTTP/1.1\r\nAccept: */*\r\nAccept-Encoding: gzip, deflate\r\nConnection: Keep-Alive\r\nContent-Length: %i\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: ssapi.ryanborgeson.com\r\nUser-Agent: runscope/0.1\r\n\r\n%s\r\n\r\n", strlen(JSONPayload) - 1, JSONPayload);
-	sprintf(Headers, "POST /api/sensor HTTP/1.1\r\nHost: ssapi.ryanborgeson.com\r\nConnection: Keep-Alive\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %i\r\n\r\n%s\r\n\r\n", strlen(JSONPayload) - 1, JSONPayload);
+	sprintf(Headers, "POST /api/sensor HTTP/1.1\r\nHost: ssapi.ryanborgeson.com\r\nConnection: Keep-Alive\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %i\r\n\r\n%s\r\n\r\n", strlen(JSONPayload), JSONPayload);
 
 	sprintf(CIPSEND, "AT+CIPSEND=4,%i\r\n\r\n", strlen(Headers));
 
 
 	WireLess_OutString("AT+CIPMUX=1\r\n");
 	//PatternCheck("OK");
-	Delay1ms(100);
+	Delay1ms(20);
 	WireLess_OutString("AT+CIPSTART=4,\"TCP\",\"ssapi.ryanborgeson.com\",80\r\n");
 	//PatternCheck("OK");
-	Delay1ms(100);
+	Delay1ms(20);
 
 
 	WireLess_OutString(CIPSEND);
 	//PatternCheck("OK");
-	Delay1ms(100);
+	Delay1ms(20);
 	WireLess_OutString(Headers);
 	//WireLess_OutString("\r\n\r\n");
 	//PatternCheck("OK");
-	Delay1ms(100);
+	Delay1ms(20);
 
 	//WireLess_OutString("AT+CIPCLOSE\r\n");
 	//Delay1ms(50);

@@ -34,7 +34,8 @@ void Alerts(SensorData * Data) {
 		}
 
 		Buzzer_Module_Off();
-		RGB_Module_SetColor(GREEN);
+
+		RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
 		PreviousWarning = 0;
 	}
 
