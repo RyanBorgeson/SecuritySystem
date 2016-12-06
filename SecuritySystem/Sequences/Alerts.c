@@ -22,4 +22,8 @@ void Alerts(SensorData * Data) {
 		RGB_Module_SetColor(GREEN);
 	}
 
+	if (atoi(ConvertBCDToString(ClockRegisters[TEMPERATURE])) > 43) {
+
+	}
+
 }

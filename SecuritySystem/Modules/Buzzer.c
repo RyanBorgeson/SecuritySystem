@@ -17,7 +17,10 @@ void Buzzer_Init(void) {
 }
 
 void Buzzer_Module_Off(void) {
+	P6->DIR &= ~BIT6;
 	TIMER_A2->CCR[3] = 0;
+	GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN6);
+
 }
 
 void Buzzer_Module_SingleTone(void) {
@@ -28,6 +31,7 @@ void Buzzer_Module_SingleTone(void) {
 }
 
 void Buzzer_Module_ToggleTone(void) {
+	P6->DIR |= BIT6;
 
 	if (TIMER_A2->CCR[3] == 100 || TIMER_A2->CCR[3] == 0) {
 		TIMER_A2->CCR[3] = 500;

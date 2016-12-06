@@ -54,15 +54,16 @@
 #define POUND 4094
 #define NONE 4097
 
+// Keypad related items.
+#define LAST_KEY 0
 volatile uint16_t KeypadState[];
 
 
 /* RTC Register values (Date/Time) */
 volatile uint32_t ClockRegisters[19];
 
-uint8_t RefreshInterrupt, RefreshInterruptCounter;
+uint8_t RefreshInterrupt;
 
-uint8_t SavedPIN[4], EnteredPIN[4];
 
 
 

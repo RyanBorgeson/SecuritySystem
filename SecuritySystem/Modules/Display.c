@@ -9,36 +9,31 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 	for (i = 0; i < strlen(String); i++) {
 		ST7735_DrawChar(((x + (i * spacing)) % 145), y, String[i], Color, Background, size);
 	}
+
 }
 
 /* MAIN SCREEN */
 void Display_Module_MainScreen(SensorData * Data, int ClockX) {
-	char Time[20], Date[20], Temperature[20];
+	char Time[15], Date[15], Temperature[15];
+	char Hours[3], Minutes[3], Seconds[3], Month[3], Day[3], Year[3], Temp[3];
 
-	char * Hours = ConvertBCDToString(ClockRegisters[HOUR]);
-	char * Minutes =  ConvertBCDToString(ClockRegisters[MINUTE]);
-	char * Seconds =  ConvertBCDToString(ClockRegisters[SECOND]);
-	char * Month = ConvertBCDToString(ClockRegisters[MONTH]);
-	char * Day = ConvertBCDToString(ClockRegisters[DAY]);
-	char * Year = ConvertBCDToString(ClockRegisters[YEAR]);
-	char * Temp = ConvertBCDToString(ClockRegisters[TEMPERATURE]);
+	ConvertBCDToString(ClockRegisters[HOUR], &Hours);
+	ConvertBCDToString(ClockRegisters[MINUTE], &Minutes);
+	ConvertBCDToString(ClockRegisters[SECOND], &Seconds);
+	ConvertBCDToString(ClockRegisters[MONTH], &Month);
+	ConvertBCDToString(ClockRegisters[DAY], &Day);
+	ConvertBCDToString(ClockRegisters[YEAR], &Year);
+	ConvertBCDToString(ClockRegisters[TEMPERATURE], &Temp);
 
-	sprintf(Time, "  %s:%s:%s ", Hours, Minutes, Seconds);
+	sprintf(Time, "  %s:%s:%s  ", Hours, Minutes, Seconds);
 	sprintf(Date, "  %s/%s/%s  ", Month, Day, Year);
 	sprintf(Temperature, "%s Celsius", Temp);
-
-	free(Hours);
-	free(Minutes);
-	free(Seconds);
-	free(Month);
-	free(Day);
-	free(Year);
-
 
 	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 30, 2, 12);
 	Display_Module_DrawString(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 50, 1, 7);
 	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 50, 80, 1, 7);
 	Display_Module_DrawString("# Menu", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+
 }
 
 void Display_Clear_Screen(void) {
@@ -130,27 +125,31 @@ void Display_Module_SetTime(SensorData * Data, int Digits, int SetTimeCounter) {
 
 	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
+	free(EnteredDigits);
 }
 
 
 /* View Logs */
 void Display_Module_ViewLogs(SensorData * Data) {
 
+	char TimeLog[25];
+
+	char Hours[3], Minutes[3], Seconds[3], Month[3], Day[3], Year[3], Temp[3];
 	Display_Module_DrawString("View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
 
 
 	int i = 0;
 	for (i = 0; i < 5; i++) {
-		char TimeLog[25];
-		sprintf(TimeLog, "%s:%s:%s %s/%s/%s", ConvertBCDToString(Data->FlashStorage.DateInformation[i][0]),
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][1]),
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][2]),
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][3]),
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][4]),
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][5]));
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][3], &Hours);
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][4], &Minutes);
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][5], &Seconds);
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][0], &Month);
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][1], &Day);
+		ConvertBCDToString(Data->FlashStorage.DateInformation[i][2], &Year);
+
+		sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
 
 		Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 15), 1, 7);
-		free(TimeLog);
 	}
 
 
@@ -176,14 +175,11 @@ void Display_Init(void) {
 }
 
 
-char * ConvertBCDToString(uint32_t BCD, char * String) {
+void ConvertBCDToString(uint8_t BCD, char * String) {
 
-	char * str = malloc(sizeof(char) * 3);
-	str[0] = (((BCD & 0xF0) >> 4) + 48);
-	str[1] = ((BCD & 0x0F) + 48);
-	str[2] = '\0';
-
-	return str;
+	*String++ = (((BCD & 0xF0) >> 4) + 48);
+	*String++ = ((BCD & 0x0F) + 48);
+	*String = '\0';
 }
 
 
@@ -195,11 +191,8 @@ uint8_t ConvertStringToBCD(char * String) {
 
 
 void Display_Splash_Screen(void) {
-
-	ST7735_FillRect(0, 32, SCREEN_WIDTH, 64, ST7735_Color565(52, 152, 219));
-
-	Display_Module_DrawString("Loading...", ST7735_Color565(255, 255, 255), ST7735_Color565(52, 152, 219), 30, 60, 1, 7);
-	//ST7735_FillRect(0, SCREEN_HEIGHT - 20, SCREEN_WIDTH, 20, ST7735_Color565(46, 204, 113));
+	ST7735_FillRect(0, 32, SCREEN_WIDTH, 64, ST7735_Color565(255, 255, 255));
+	Display_Module_DrawString("Loading...", ST7735_Color565(0, 0, 0), ST7735_Color565(255, 255, 255), 30, 60, 1, 7);
 }
 
 
