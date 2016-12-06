@@ -14,6 +14,7 @@ void Main_Sequence(SensorData * Data) {
 	// Main sequence settings.
 	Data->State = MAIN;									// Setup the state of the system.
 	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
+	int SecondsCounter = 0;
 	Display_Clear_Screen();								// Clears screen.
 
 	// Current ClockX location.
@@ -28,8 +29,16 @@ void Main_Sequence(SensorData * Data) {
 		if (PreviousSecond != ClockRegisters[SECOND]) {
 			GatherSensorData(Data);
 			Alerts(Data);
-			SendPostRequest(Data);
+			SecondsCounter++;
+			//SendPostRequest(Data);
 			PreviousSecond = ClockRegisters[SECOND];
+		}
+
+
+		// Only make an api call every five seconds.
+		if (SecondsCounter == 5) {
+			SendPostRequest(Data);
+			SecondsCounter = 0;
 		}
 
 		// Refresh interrupt handles functions that need to be updated frequently.
