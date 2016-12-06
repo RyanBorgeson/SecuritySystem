@@ -28,7 +28,7 @@ void Main_Sequence(SensorData * Data) {
 		if (PreviousSecond != ClockRegisters[SECOND]) {
 			GatherSensorData(Data);
 			Alerts(Data);
-
+			SendPostRequest(Data);
 			PreviousSecond = ClockRegisters[SECOND];
 		}
 

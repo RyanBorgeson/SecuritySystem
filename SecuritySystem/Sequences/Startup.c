@@ -28,7 +28,7 @@ void Startup_Sequence(SensorData * Data) {
 	Proximity_Init();
 	HallEffect_Init();
 	Buzzer_Init();
-
+	Wireless_Init();
 
 	// Initialize additional modules.
 	RGB_Init();

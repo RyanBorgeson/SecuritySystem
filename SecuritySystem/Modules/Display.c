@@ -29,9 +29,9 @@ void Display_Module_MainScreen(SensorData * Data, int ClockX) {
 	sprintf(Date, "  %s/%s/%s  ", Month, Day, Year);
 	sprintf(Temperature, "%s Celsius", Temp);
 
-	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 30, 2, 12);
-	Display_Module_DrawString(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 50, 1, 7);
-	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 50, 80, 1, 7);
+	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 40, 2, 12);
+	Display_Module_DrawString(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 60, 1, 7);
+	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 50, 90, 1, 7);
 	Display_Module_DrawString("# Menu", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 }
@@ -157,14 +157,6 @@ void Display_Module_ViewLogs(SensorData * Data) {
 
 }
 
-
-
-void Display_Refresh(SensorData * Data) {
-	Display_Module_DrawString("test", ST7735_Color565(235, 107, 107), ST7735_Color565(32, 36, 39), 7, SCREEN_HEIGHT - 13, 1, 7);
-
-}
-
-
 void Display_Init(void) {
 	// Setup display with black background.
 	ST7735_InitR(INITR_REDTAB);
@@ -183,18 +175,20 @@ void ConvertBCDToString(uint8_t BCD, char * String) {
 }
 
 
-uint8_t ConvertStringToBCD(char * String) {
-
-	uint8_t BCD = 0x00;
-	return BCD;
-}
-
-
 void Display_Splash_Screen(void) {
 	ST7735_FillRect(0, 32, SCREEN_WIDTH, 64, ST7735_Color565(255, 255, 255));
 	Display_Module_DrawString("Loading...", ST7735_Color565(0, 0, 0), ST7735_Color565(255, 255, 255), 30, 60, 1, 7);
 }
 
+
+void Display_Module_Warning(char * Message) {
+	ST7735_FillRect(0, 0, SCREEN_WIDTH, 25, ST7735_Color565(223, 65, 65));
+	Display_Module_DrawString(Message, ST7735_Color565(255, 255, 255), ST7735_Color565(223, 65, 65), 20, 7, 1, 7);
+}
+
+void Display_Module_RemoveWarning() {
+	ST7735_FillRect(0, 0, SCREEN_WIDTH, 30, ST7735_Color565(0, 0, 0));
+}
 
 
 

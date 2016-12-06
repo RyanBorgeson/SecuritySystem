@@ -26,14 +26,20 @@ void Wireless_Init(void) {
 
 
 
-void SendPostRequest(SensorData * SensorReadings) {
+void SendPostRequest(SensorData * Data) {
 	static uint8_t RequestsSent = 0;
+
+	// Sensor variables.
+	char Temp[3];
+
+	ConvertBCDToString(ClockRegisters[TEMPERATURE], &Temp);
+
 	char Headers[1000];
 	char JSONPayload[1000];
 	char CIPSEND[100];
 
 
-	sprintf(JSONPayload, "{\"Temperature\":\"22\",\"AmbientLight\":\"0.7\"}", SensorReadings->Photoresistor);
+	sprintf(JSONPayload, "{\"Temperature\":\"%s\",\"AmbientLight\":\"0.7\"}", Temp);
 	//sprintf(JSONPayload, "{\"Temperature\":\"22\",\"AmbientLight\":\"%.5f\"}", SensorReadings->Photoresistor);
 	sprintf(Headers, "POST /api/sensor HTTP/1.1\r\nHost: ssapi.ryanborgeson.com\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %i\r\n\r\n%s\r\n\r\n", strlen(JSONPayload), JSONPayload);
 	sprintf(CIPSEND, "AT+CIPSEND=4,%i\r\n\r\n", (strlen(Headers) + strlen(JSONPayload) - 28));
