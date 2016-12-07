@@ -42,7 +42,10 @@ typedef struct {
  */
 typedef struct {
 	char SavedPIN[4];
-	uint8_t DateInformation[5][6];
+	uint8_t ArmTimes[5][6];
+	uint8_t DisarmTimes[5][6];
+	uint8_t AlarmTriggers[5][6];
+
 } SavedInformation;
 
 

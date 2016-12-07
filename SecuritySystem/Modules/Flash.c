@@ -33,7 +33,7 @@ void Flash_Module_SaveToFlash(SavedInformation * Info) {
 	while(!MAP_FlashCtl_eraseSector(CALIBRATION_START));
 
 	/* Program the flash with the new data. */
-	while (!MAP_FlashCtl_programMemory(Info, (void*) CALIBRATION_START + 1, 34)); // Note: leave first byte unprogrammed
+	while (!MAP_FlashCtl_programMemory(Info, (void*) CALIBRATION_START + 1, 94)); // Note: leave first byte unprogrammed
 
 	/* Setting the sector back to protected */
 	MAP_FlashCtl_protectSector(FLASH_INFO_MEMORY_SPACE_BANK0,FLASH_SECTOR0);

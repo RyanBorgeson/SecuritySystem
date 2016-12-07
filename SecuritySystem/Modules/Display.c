@@ -7,6 +7,15 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 	int i;
 
 	for (i = 0; i < strlen(String); i++) {
+		ST7735_DrawChar((x + (i * spacing)), y, String[i], Color, Background, size);
+	}
+
+}
+
+void Display_Module_DrawStringWithMarquee(char String[], uint16_t Color, uint16_t Background, int x, int y, int size, int spacing) {
+	int i;
+
+	for (i = 0; i < strlen(String); i++) {
 		ST7735_DrawChar(((x + (i * spacing)) % 145), y, String[i], Color, Background, size);
 	}
 
@@ -14,8 +23,8 @@ void Display_Module_DrawString(char String[], uint16_t Color, uint16_t Backgroun
 
 /* MAIN SCREEN */
 void Display_Module_MainScreen(SensorData * Data, int ClockX) {
-	char Time[15], Date[15], Temperature[15];
-	char Hours[3], Minutes[3], Seconds[3], Month[3], Day[3], Year[3], Temp[3];
+	char Time[15], Date[15], Temperature[11];
+	char Hours[3], Minutes[3], Seconds[3], Month[3], Day[3], Year[3], Temp[2];
 
 	ConvertBCDToString(ClockRegisters[HOUR], &Hours);
 	ConvertBCDToString(ClockRegisters[MINUTE], &Minutes);
@@ -29,10 +38,21 @@ void Display_Module_MainScreen(SensorData * Data, int ClockX) {
 	sprintf(Date, "  %s/%s/%s  ", Month, Day, Year);
 	sprintf(Temperature, "%s Celsius", Temp);
 
-	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 40, 2, 12);
-	Display_Module_DrawString(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 60, 1, 7);
-	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 50, 90, 1, 7);
+	Display_Module_DrawStringWithMarquee(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 40, 2, 12);
+	Display_Module_DrawStringWithMarquee(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 60, 1, 7);
+	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 40, 90, 1, 7);
 	Display_Module_DrawString("# Menu", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+
+	free(Time);
+	free(Date);
+	free(Temperature);
+	free(Hours);
+	free(Minutes);
+	free(Seconds);
+	free(Month);
+	free(Day);
+	free(Year);
+	free(Temp);
 
 }
 
@@ -50,9 +70,9 @@ void Display_Menu(SensorData * Data) {
 	Display_Module_DrawString("4. View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 75, 1, 7);
 
 	if (Data->ArmedStatus == NOTARMED)
-		Display_Module_DrawString("5. Arm System    ", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
+		Display_Module_DrawString("5. Arm System      ", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
 	else
-		Display_Module_DrawString("5. Disarm System", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
+		Display_Module_DrawString("5. Disarm System  ", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
 
 
 	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
@@ -135,29 +155,67 @@ void Display_Module_SetTime(SensorData * Data, int Digits, int SetTimeCounter) {
 
 
 /* View Logs */
-void Display_Module_ViewLogs(SensorData * Data) {
+void Display_Module_ViewLogs(SensorData * Data, uint8_t Page) {
 
 	char TimeLog[25];
 
 	char Hours[3], Minutes[3], Seconds[3], Month[3], Day[3], Year[3], Temp[3];
-	Display_Module_DrawString("View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
+	uint8_t TempLogs[5][6];
 
+	if (Page == 0) {
+		Display_Module_DrawString("Arm Logs      ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 1, 7);
 
-	int i = 0;
-	for (i = 0; i < 5; i++) {
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][3], &Hours);
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][4], &Minutes);
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][5], &Seconds);
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][0], &Month);
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][1], &Day);
-		ConvertBCDToString(Data->FlashStorage.DateInformation[i][2], &Year);
+		int i = 0;
+		for (i = 0; i < 5; i++) {
+			ConvertBCDToString(Data->FlashStorage.ArmTimes[i][3], &Hours);
+			ConvertBCDToString(Data->FlashStorage.ArmTimes[i][4], &Minutes);
+			ConvertBCDToString(Data->FlashStorage.ArmTimes[i][5], &Seconds);
+			ConvertBCDToString(Data->FlashStorage.ArmTimes[i][0], &Month);
+			ConvertBCDToString(Data->FlashStorage.ArmTimes[i][1], &Day);
+			ConvertBCDToString(Data->FlashStorage.ArmTimes[i][2], &Year);
 
-		sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
+			sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
 
-		Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 15), 1, 7);
+			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 12), 1, 7);
+		}
+
+	} else if (Page == 1) {
+		Display_Module_DrawString("Disarm Logs   ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 1, 7);
+
+		int i = 0;
+		for (i = 0; i < 5; i++) {
+			ConvertBCDToString(Data->FlashStorage.DisarmTimes[i][3], &Hours);
+			ConvertBCDToString(Data->FlashStorage.DisarmTimes[i][4], &Minutes);
+			ConvertBCDToString(Data->FlashStorage.DisarmTimes[i][5], &Seconds);
+			ConvertBCDToString(Data->FlashStorage.DisarmTimes[i][0], &Month);
+			ConvertBCDToString(Data->FlashStorage.DisarmTimes[i][1], &Day);
+			ConvertBCDToString(Data->FlashStorage.DisarmTimes[i][2], &Year);
+
+			sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
+
+			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 12), 1, 7);
+		}
+
+	} else {
+		Display_Module_DrawString("Trigger Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 1, 7);
+		int i = 0;
+		for (i = 0; i < 5; i++) {
+			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][3], &Hours);
+			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][4], &Minutes);
+			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][5], &Seconds);
+			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][0], &Month);
+			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][1], &Day);
+			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][2], &Year);
+
+			sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
+
+			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 12), 1, 7);
+		}
 	}
 
 
+
+	Display_Module_DrawString("1 Next", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, SCREEN_HEIGHT - 20, 1, 7);
 	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 }

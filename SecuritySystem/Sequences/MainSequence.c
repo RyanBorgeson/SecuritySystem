@@ -40,6 +40,9 @@ void Main_Sequence(SensorData * Data) {
 		if (SecondsCounter == 3) {
 			SendPostRequest(Data);
 			SecondsCounter = 0;
+
+			if (Data->State == MAIN)
+				Display_Module_MainScreen(Data, ClockX);
 		}
 
 		// Refresh interrupt handles functions that need to be updated frequently.
@@ -131,6 +134,9 @@ void Main_Sequence(SensorData * Data) {
 				GatherSensorData(Data);
 				Alerts(Data);
 
+				// Just in case, turn of the buzzer...
+				Buzzer_Module_Off();
+
 				// Check for user input from the keypad.
 				Keypad_Execute(Data);
 
@@ -144,10 +150,6 @@ void Main_Sequence(SensorData * Data) {
 				if (Data->KeyCombo[LAST_KEY] == '3') {
 					// Toggle the red light when unlocking the door.
 					RGB_Module_SetColor(RED);
-
-					// Update flash with the time the door was unlocked.
-					Flash_Module_PushDateTimeUp(&Data->FlashStorage.DateInformation);
-					Flash_Module_SaveToFlash(&Data->FlashStorage);
 
 					// Ensures that this state does not get toggle again.
 					Data->KeyCombo[LAST_KEY] = '\0;';
@@ -168,12 +170,26 @@ void Main_Sequence(SensorData * Data) {
 				} else if (Data->KeyCombo[LAST_KEY] == '4') {
 
 					Display_Clear_Screen();
+					CurrentDigit = 0;
 					Data->State = VIEWLOGS;
 
 				} else if (Data->KeyCombo[LAST_KEY] == '5') {
 
 					Data->ArmedStatus = Data->ArmedStatus == NOTARMED ? ARMED : NOTARMED;
 					RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
+
+					if (Data->ArmedStatus == NOTARMED)
+					{
+						// Update flash with the time the door was unlocked.
+						Flash_Module_PushDateTimeUp(&Data->FlashStorage.DisarmTimes);
+						Flash_Module_SaveToFlash(&Data->FlashStorage);
+					}
+					if (Data->ArmedStatus == ARMED)
+					{
+						// Update flash with the time the door was unlocked.
+						Flash_Module_PushDateTimeUp(&Data->FlashStorage.ArmTimes);
+						Flash_Module_SaveToFlash(&Data->FlashStorage);
+					}
 
 					// Refresh display
 					Display_Menu(Data);
@@ -271,16 +287,20 @@ void Main_Sequence(SensorData * Data) {
 			case VIEWLOGS:
 			{
 				// Check for input from the keypad.
-				Keypad_Execute(Data);
+				Keypad_ExecuteForPinEnter(Data, &CurrentDigit);
 
 				// Update with view logs content.
 				if (PreviousSecond != ClockRegisters[SECOND]) {
-					Display_Module_ViewLogs(Data);
+					Display_Module_ViewLogs(Data, CurrentDigit);
 					PreviousSecond = ClockRegisters[SECOND];
+
+					if (CurrentDigit == 3)
+						CurrentDigit = 0;
 				}
 
 				// Pressing the * will return users to the menu.
 				if (Data->KeyCombo[0] == '*') {
+					CurrentDigit = 0;
 					Display_Clear_Screen();
 					Data->KeyCombo[0] = '\0';
 					Data->State = MENU;
