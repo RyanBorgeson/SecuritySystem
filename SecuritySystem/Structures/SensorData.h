@@ -44,7 +44,7 @@ typedef struct {
 	char SavedPIN[4];
 	uint8_t ArmTimes[5][6];
 	uint8_t DisarmTimes[5][6];
-	uint8_t AlarmTriggers[5][6];
+	uint8_t AlarmTriggers[5][7];
 
 } SavedInformation;
 
@@ -74,6 +74,7 @@ typedef struct {
 		VIEWLOGS
    } State;
 
+   enum MotorStatus { LOCK, UNLOCK } MotorStatus;
    enum ArmedStatus { ARMED, NOTARMED } ArmedStatus;
    uint16_t Temperature;
    uint16_t TempDecimal;
@@ -81,10 +82,12 @@ typedef struct {
    uint8_t HallEffect[NUM_HALLEFFECT_SENSORS];
    char KeyCombo[4];
 
+   uint8_t AlertStatuses[5];
    uint8_t Refresh;
    uint32_t RTC[19];
    DateTime DateTime;
    RGB_LED LED;
+   int MinuteCounter;
 
    SavedInformation FlashStorage;
 

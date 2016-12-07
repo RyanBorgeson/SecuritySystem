@@ -31,7 +31,7 @@ void Startup_Sequence(SensorData * Data) {
 	Buzzer_Init();
 	Wireless_Init();
 	AmbientLight_Module_Init();
-
+	Watchdog_Init();
 
 	// Initialize additional modules.
 	RGB_Init();

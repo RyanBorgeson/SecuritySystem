@@ -8,6 +8,9 @@
 #include "HallEffect.h"
 
 
+// P4.0 is DOOR
+// P6.1 is WINDOW
+
 void HallEffect_Init(void) {
 	// Set peripheral as primary module function.
 	GPIO_setAsPeripheralModuleFunctionInputPin(HALL_EFFECT_PORT_1, HALL_EFFECT_PIN_1, GPIO_PRIMARY_MODULE_FUNCTION);

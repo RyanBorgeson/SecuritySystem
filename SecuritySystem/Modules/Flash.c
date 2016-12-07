@@ -33,7 +33,7 @@ void Flash_Module_SaveToFlash(SavedInformation * Info) {
 	while(!MAP_FlashCtl_eraseSector(CALIBRATION_START));
 
 	/* Program the flash with the new data. */
-	while (!MAP_FlashCtl_programMemory(Info, (void*) CALIBRATION_START + 1, 94)); // Note: leave first byte unprogrammed
+	while (!MAP_FlashCtl_programMemory(Info, (void*) CALIBRATION_START + 1, 99)); // Note: leave first byte unprogrammed
 
 	/* Setting the sector back to protected */
 	MAP_FlashCtl_protectSector(FLASH_INFO_MEMORY_SPACE_BANK0,FLASH_SECTOR0);
@@ -60,4 +60,22 @@ void Flash_Module_PushDateTimeUp(uint8_t * Date) {
 	*(Date + 3) = ClockRegisters[2];
 	*(Date + 4) = ClockRegisters[1];
 	*(Date + 5) = ClockRegisters[0];
+
+}
+
+void Flash_Module_PushDateTimeUpTrigger(uint8_t * Date, char Source) {
+	int i, x;
+	for (x = 0; x < 7; x++)
+		for (i = 35; i > 0; i--) {
+			*(Date + i) = *(Date + (i - 1));
+		}
+
+	*(Date) = ClockRegisters[5];
+	*(Date + 1) = ClockRegisters[4];
+	*(Date + 2) = ClockRegisters[6];
+	*(Date + 3) = ClockRegisters[2];
+	*(Date + 4) = ClockRegisters[1];
+	*(Date + 5) = ClockRegisters[0];
+	*(Date + 6) = Source;
+
 }

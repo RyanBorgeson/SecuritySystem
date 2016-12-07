@@ -118,8 +118,8 @@ void Keypad_Execute(SensorData * Data) {
 	Keypad_Scan();
 
 	if (Keypad_Debounce()) {
-		Keypad_SaveButtonPress(*KeypadState, Data);
-
+		if (Keypad_SaveButtonPress(*KeypadState, Data))
+			Data->MinuteCounter = 0;
 	}
 }
 
@@ -131,6 +131,7 @@ void Keypad_ExecuteForPinEnter(SensorData * Data, int * Count) {
 				if (Data->KeyCombo[0] != '#') {
 					Data->EnteredPIN[*Count] = Data->KeyCombo[0];
 					(*Count)++;
+					Data->MinuteCounter = 0;
 				}
 			}
 		}

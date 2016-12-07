@@ -30,10 +30,11 @@ void Main_Sequence(SensorData * Data) {
 			GatherSensorData(Data);
 			Alerts(Data);
 			SecondsCounter++;
+			Data->MinuteCounter++;
 
-			//SendPostRequest(Data);
 			PreviousSecond = ClockRegisters[SECOND];
 		}
+
 
 
 		// Only make an api call every three seconds.
@@ -51,6 +52,20 @@ void Main_Sequence(SensorData * Data) {
 			ClockX += 1;
 			Display_Module_UpdateBacklight(Data);
 			RTC_Module_Read(&Data);
+
+
+
+			// Reset to the main screen if there is no input from the user
+			// for one minute.
+			if (Data->MinuteCounter >= 60) {
+				Data->State == MAIN;
+				Data->MinuteCounter = 0;
+			}
+
+			// Regularly clear the watchdog timer so the system
+			// does not reset.
+			Watchdog_Clear();
+
 			RefreshInterrupt = 0;
 		}
 
@@ -148,8 +163,7 @@ void Main_Sequence(SensorData * Data) {
 
 				// Check to see which item the user has chosen.
 				if (Data->KeyCombo[LAST_KEY] == '3') {
-					// Toggle the red light when unlocking the door.
-					RGB_Module_SetColor(RED);
+					Data->State = TOGGLELOCK;
 
 					// Ensures that this state does not get toggle again.
 					Data->KeyCombo[LAST_KEY] = '\0;';
@@ -312,7 +326,20 @@ void Main_Sequence(SensorData * Data) {
 			// Toggle lock state will lock and unlock the door.
 			case TOGGLELOCK:
 			{
-				// TODO: Complete the lock and unlock state.
+
+				if (Data->MotorStatus == LOCK) {
+					Motor_RotateClockwise();
+					Data->MotorStatus = UNLOCK;
+					Data->State = MENU;
+					break;
+				}
+
+				if (Data->MotorStatus == UNLOCK) {
+					Motor_RotateCounterClockwise();
+					Data->MotorStatus = LOCK;
+					Data->State = MENU;
+					break;
+				}
 
 				break;
 			}
@@ -324,6 +351,7 @@ void Main_Sequence(SensorData * Data) {
 
 
 void TA0_0_IRQHandler(SensorData * Data) {
+
 
 	RefreshInterrupt = 1;
 

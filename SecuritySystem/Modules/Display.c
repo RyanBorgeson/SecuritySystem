@@ -36,11 +36,11 @@ void Display_Module_MainScreen(SensorData * Data, int ClockX) {
 
 	sprintf(Time, "  %s:%s:%s  ", Hours, Minutes, Seconds);
 	sprintf(Date, "  %s/%s/%s  ", Month, Day, Year);
-	sprintf(Temperature, "%s Celsius", Temp);
+	sprintf(Temperature, "    %s Celsius    ", Temp);
 
 	Display_Module_DrawStringWithMarquee(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), ClockX, 40, 2, 12);
 	Display_Module_DrawStringWithMarquee(Date, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25 + ClockX, 60, 1, 7);
-	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 40, 90, 1, 7);
+	Display_Module_DrawString(Temperature, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 25, 90, 1, 7);
 	Display_Module_DrawString("# Menu", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 	free(Time);
@@ -62,20 +62,20 @@ void Display_Clear_Screen(void) {
 
 /* MENU */
 void Display_Menu(SensorData * Data) {
-	Display_Module_DrawString("Options", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 10, 2, 12);
+	Display_Module_DrawString("Options", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
 
-	Display_Module_DrawString("1. Set PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30, 1, 7);
-	Display_Module_DrawString("2. Set Time & Date", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 45, 1, 7);
-	Display_Module_DrawString("3. Unlock / Lock", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 60, 1, 7);
-	Display_Module_DrawString("4. View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 75, 1, 7);
+	Display_Module_DrawString("1. Set PIN", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30, 1, 7);
+	Display_Module_DrawString("2. Set Time & Date", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 45, 1, 7);
+	Display_Module_DrawString("3. Unlock / Lock", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 60, 1, 7);
+	Display_Module_DrawString("4. View Logs", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 75, 1, 7);
 
 	if (Data->ArmedStatus == NOTARMED)
-		Display_Module_DrawString("5. Arm System      ", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
+		Display_Module_DrawString("5. Arm System      ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 90, 1, 7);
 	else
-		Display_Module_DrawString("5. Disarm System  ", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 90, 1, 7);
+		Display_Module_DrawString("5. Disarm System  ", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 90, 1, 7);
 
 
-	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 }
 
 /* ENTER PIN */
@@ -94,7 +94,7 @@ void Display_Module_EnterPIN(SensorData * Data, int Digits) {
 	}
 
 
-	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 }
 
@@ -116,7 +116,7 @@ void Display_Module_SetPIN(SensorData * Data, int Digits) {
 	}
 
 
-	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 }
 
@@ -148,7 +148,7 @@ void Display_Module_SetTime(SensorData * Data, int Digits, int SetTimeCounter) {
 
 	Display_Module_DrawString(EnteredDigits, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 60, 60, 2, 12);
 
-	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 	free(EnteredDigits);
 }
@@ -176,7 +176,7 @@ void Display_Module_ViewLogs(SensorData * Data, uint8_t Page) {
 
 			sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
 
-			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 12), 1, 7);
+			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30 + (i * 12), 1, 7);
 		}
 
 	} else if (Page == 1) {
@@ -193,7 +193,7 @@ void Display_Module_ViewLogs(SensorData * Data, uint8_t Page) {
 
 			sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
 
-			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 12), 1, 7);
+			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30 + (i * 12), 1, 7);
 		}
 
 	} else {
@@ -207,16 +207,16 @@ void Display_Module_ViewLogs(SensorData * Data, uint8_t Page) {
 			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][1], &Day);
 			ConvertBCDToString(Data->FlashStorage.AlarmTriggers[i][2], &Year);
 
-			sprintf(TimeLog, "%s:%s:%s %s/%s/%s", Hours, Minutes, Seconds, Month, Day, Year);
+			sprintf(TimeLog, "%s:%s:%s %s/%s/%s %c  ", Hours, Minutes, Seconds, Month, Day, Year, Data->FlashStorage.AlarmTriggers[i][6]);
 
-			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, 30 + (i * 12), 1, 7);
+			Display_Module_DrawString(TimeLog, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 30 + (i * 12), 1, 6);
 		}
 	}
 
 
 
-	Display_Module_DrawString("1 Next", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), 10, SCREEN_HEIGHT - 20, 1, 7);
-	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(32, 36, 39), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("1 Next", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, SCREEN_HEIGHT - 20, 1, 7);
+	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 }
 
@@ -247,6 +247,16 @@ void Display_Splash_Screen(void) {
 void Display_Module_Warning(char * Message) {
 	ST7735_FillRect(0, 0, SCREEN_WIDTH, 25, ST7735_Color565(223, 65, 65));
 	Display_Module_DrawString(Message, ST7735_Color565(255, 255, 255), ST7735_Color565(223, 65, 65), 20, 7, 1, 7);
+}
+
+void Display_Module_Message(char * Message) {
+	ST7735_FillRect(0, 0, SCREEN_WIDTH, 25, ST7735_Color565(81, 156, 163));
+	Display_Module_DrawString(Message, ST7735_Color565(255, 255, 255), ST7735_Color565(81, 156, 163), 20, 7, 1, 7);
+}
+
+void Display_Module_GreenMessage(char * Message) {
+	ST7735_FillRect(0, 0, SCREEN_WIDTH, 25, ST7735_Color565(62, 210, 55));
+	Display_Module_DrawString(Message, ST7735_Color565(255, 255, 255), ST7735_Color565(62, 210, 55), 20, 7, 1, 7);
 }
 
 void Display_Module_RemoveWarning() {
