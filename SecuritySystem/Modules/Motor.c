@@ -7,10 +7,12 @@ void Motor_RotateCounterClockwise(void) {
 	int count = 0;
 
 	while(1) {
-		Watchdog_Clear();
+		if (count == 8*4)
+			Watchdog_Clear();
 
 		if (count < 8 * 4 * 4) {
 
+
 			P4->DIR |= BIT2 | BIT5;
 			P4->DIR &= ~(BIT3 | BIT4);
 			SysTick_delay(4);
@@ -34,11 +36,28 @@ void Motor_RotateCounterClockwise(void) {
 			SysTick_delay(4);
 			P4->DIR |= BIT2 | BIT3;
 			P4->DIR &= ~(BIT4 | BIT5);
+
+			/*
+			P4->DIR |= BIT5;
+			P4->DIR &= ~(BIT2 | BIT3 | BIT4);
+			SysTick_delay(4);
+			P4->DIR |= BIT4;
+			P4->DIR &= ~(BIT2 | BIT3 | BIT5);
+			SysTick_delay(4);
+			P4->DIR |= BIT3;
+			P4->DIR &= ~(BIT2 | BIT4 | BIT5);
+			SysTick_delay(4);
+			P4->DIR |= BIT2;
+			P4->DIR &= ~(BIT3 | BIT4 | BIT5);
+			SysTick_delay(4);*/
+
 			count++;
 		} else {
 			break;
 		}
 	}
+	P4->DIR &= ~(BIT2 | BIT3);
+	P4->DIR &= ~(BIT4 | BIT5);
 }
 
 
@@ -48,38 +67,57 @@ void Motor_RotateClockwise(void) {
 	int count = 0;
 
 	while(1) {
-		Watchdog_Clear();
+
+		if (count == 8*4)
+			Watchdog_Clear();
 
 		if (count < 8 * 4 * 4) {
 
 
+
 			P4->DIR |= BIT2 | BIT3;
 			P4->DIR &= ~(BIT4 | BIT5);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT3 | BIT4;
 			P4->DIR &= ~(BIT2 | BIT5);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT4 | BIT5;
 			P4->DIR &= ~(BIT2 | BIT3);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT2 | BIT5;
 			P4->DIR &= ~(BIT3 | BIT4);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT2 | BIT3;
 			P4->DIR &= ~(BIT4 | BIT5);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT3 | BIT4;
 			P4->DIR &= ~(BIT2 | BIT5);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT4 | BIT5;
 			P4->DIR &= ~(BIT2 | BIT3);
-			SysTick_delay(3);
+			SysTick_delay(4);
 			P4->DIR |= BIT2 | BIT5;
 			P4->DIR &= ~(BIT3 | BIT4);
 
+/*
+			P4->DIR |= BIT2;
+			P4->DIR &= ~(BIT3 | BIT4 | BIT5);
+			SysTick_delay(4);
+			P4->DIR |= BIT3;
+			P4->DIR &= ~(BIT2 | BIT4 | BIT5);
+			SysTick_delay(4);
+			P4->DIR |= BIT4;
+			P4->DIR &= ~(BIT2 | BIT3 | BIT5);
+			SysTick_delay(4);
+			P4->DIR |= BIT5;
+			P4->DIR &= ~(BIT2 | BIT3 | BIT4);
+			SysTick_delay(4);
+*/
 			count++;
 		} else {
 			break;
 		}
 	}
+	P4->DIR &= ~(BIT2 | BIT3);
+	P4->DIR &= ~(BIT4 | BIT5);
 }

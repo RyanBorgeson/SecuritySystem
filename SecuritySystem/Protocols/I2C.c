@@ -29,6 +29,7 @@ void I2C_Init(void) {
 	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P6,
 	GPIO_PIN4 + GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
 
+
 	/* Initializing I2C Master to SMCLK at 400kbs with no autostop */
 	MAP_I2C_initMaster(EUSCI_B1_BASE, &i2cConfig);
 	/* Specify slave address */
