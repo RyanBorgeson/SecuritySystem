@@ -71,7 +71,8 @@ typedef struct {
 		SETPIN,
 		SETTIME,
 		TOGGLELOCK,
-		VIEWLOGS
+		VIEWLOGS,
+		ARMING
    } State;
 
    enum MotorStatus { LOCK, UNLOCK } MotorStatus;

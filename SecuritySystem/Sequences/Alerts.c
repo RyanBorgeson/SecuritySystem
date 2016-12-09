@@ -9,6 +9,28 @@ void Alerts(SensorData * Data) {
 	static uint8_t ToggleState = 0;
 	uint8_t PreviousWarning = 0;
 
+
+
+	if (ClockRegisters[TEMPERATURE] > 0x43) {
+			if (Data->State == MAIN)
+				Display_Module_Warning("Fire");
+
+			Buzzer_Module_ToggleTone();
+
+			if (ToggleState) {
+				RGB_Module_SetColor(RED);
+				ToggleState = !ToggleState;
+			} else {
+				RGB_Module_SetColor(BLACK);
+				ToggleState = !ToggleState;
+			}
+		} else {
+			//Buzzer_Module_Off();
+			RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
+		}
+
+	Buzzer_Module_ToggleTone();
+
 	if (Data->ArmedStatus == ARMED && (Data->Proximity[0] == 1 || Data->HallEffect[WINDOW] == 1 || Data->HallEffect[DOOR] == 1) && (Data->State == MAIN || Data->State == ENTERPIN)) {
 
 		// Set which alarm was trigger in flash.
@@ -31,7 +53,7 @@ void Alerts(SensorData * Data) {
 			Data->AlertStatuses[PROXIMITY] = 1;
 		}
 
-		Buzzer_Module_ToggleTone();
+		Buzzer_Module_On();
 
 		if (ToggleState) {
 			RGB_Module_SetColor(RED);
@@ -42,9 +64,27 @@ void Alerts(SensorData * Data) {
 		}
 
 
-		if (Data->State == MAIN && Data->Proximity[0] == 1)
-			Display_Module_Message("Presence Detected");
+		if (Data->State == MAIN && Data->Proximity[0] == 1 && Data->AlertStatuses[PROXIMITY] == 1) {
+			Display_Module_Message("Intruder Detected");
+		} else {
+			if (Data->State == MAIN && Data->HallEffect[DOOR] == 1 && Data->HallEffect[WINDOW] == 0)
+				Display_Module_Message("Window Open");
 
+			if (Data->State == MAIN && Data->HallEffect[WINDOW] == 1 && Data->HallEffect[DOOR] == 0)
+				Display_Module_Message("Door Open");
+
+			if (Data->State == MAIN && Data->HallEffect[WINDOW] == 1 && Data->HallEffect[DOOR] == 1)
+				Display_Module_Message("Door & Window Open");
+
+			if (Data->State == MAIN && Data->HallEffect[WINDOW] == 0 && Data->HallEffect[DOOR] == 0)
+				Display_Module_Message("Door & Window Closed");
+		}
+
+
+		PreviousWarning = 1;
+	}
+
+	if (Data->State == MAIN && Data->ArmedStatus == NOTARMED) {
 		if (Data->State == MAIN && Data->HallEffect[DOOR] == 1 && Data->HallEffect[WINDOW] == 0)
 			Display_Module_Message("Window Open");
 
@@ -56,8 +96,6 @@ void Alerts(SensorData * Data) {
 
 		if (Data->State == MAIN && Data->HallEffect[WINDOW] == 0 && Data->HallEffect[DOOR] == 0)
 			Display_Module_Message("Door & Window Closed");
-
-		PreviousWarning = 1;
 	}
 
 	if (Data->ArmedStatus == ARMED && (Data->AlertStatuses[WINDOW] == 1 || Data->AlertStatuses[DOOR] == 1 || Data->AlertStatuses[PROXIMITY] == 1)) {
@@ -85,19 +123,7 @@ void Alerts(SensorData * Data) {
 		Data->AlertStatuses[PROXIMITY] = 0;
 	}
 
-	if (atoi(ConvertBCDToString(ClockRegisters[TEMPERATURE])) > 43) {
-		if (Data->State == MAIN)
-			Display_Module_Warning("Fire");
+	//static uint8_t ConvertedTemperature = atoi(ConvertBCDToString(ClockRegisters[TEMPERATURE]));
 
-		Buzzer_Module_ToggleTone();
-
-		if (ToggleState) {
-			RGB_Module_SetColor(RED);
-			ToggleState = !ToggleState;
-		} else {
-			RGB_Module_SetColor(BLACK);
-			ToggleState = !ToggleState;
-		}
-	}
 
 }

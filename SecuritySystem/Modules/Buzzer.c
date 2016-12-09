@@ -30,8 +30,12 @@ void Buzzer_Module_SingleTone(void) {
 
 }
 
-void Buzzer_Module_ToggleTone(void) {
+void Buzzer_Module_On(void) {
 	P6->DIR |= BIT6;
+
+}
+
+void Buzzer_Module_ToggleTone(void) {
 
 	if (TIMER_A2->CCR[3] == 100 || TIMER_A2->CCR[3] == 0) {
 		TIMER_A2->CCR[3] = 500;

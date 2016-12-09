@@ -220,6 +220,17 @@ void Display_Module_ViewLogs(SensorData * Data, uint8_t Page) {
 
 }
 
+
+void Display_Module_ArmingScreen(SensorData * Data) {
+	char Time[3];
+
+	sprintf(Time, "%i", Data->MinuteCounter);
+
+
+	Display_Module_DrawString("Arming", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 10, 10, 2, 12);
+	Display_Module_DrawString(Time, ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), 60, 60, 2, 12);
+}
+
 void Display_Init(void) {
 	// Setup display with black background.
 	ST7735_InitR(INITR_REDTAB);

@@ -23,8 +23,6 @@ void Startup_Sequence(SensorData * Data) {
 
 
 	// Initialize display to show a splash screen while warming up.
-
-
 	Display_Init();
 	Proximity_Init();
 	HallEffect_Init();
@@ -60,6 +58,8 @@ void Startup_Sequence(SensorData * Data) {
 	Interrupt_registerInterrupt(TA0_0_IRQn, TA0_0_IRQHandler(Data));
 
 	Data->ArmedStatus = NOTARMED;
+	Data->MotorStatus = LOCK;
+	Buzzer_Module_Off();
 
 	//Interrupt_enableInterrupt(INT_EUSCIB1);
 

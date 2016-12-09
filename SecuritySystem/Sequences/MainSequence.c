@@ -14,6 +14,7 @@ void Main_Sequence(SensorData * Data) {
 	// Main sequence settings.
 	Data->State = MAIN;									// Setup the state of the system.
 	int PreviousSecond = ClockRegisters[SECOND];		// Keeps track of the previous second.
+	int MasterPreviousSecond = ClockRegisters[SECOND];
 	int SecondsCounter = 0;
 	Display_Clear_Screen();								// Clears screen.
 
@@ -26,13 +27,13 @@ void Main_Sequence(SensorData * Data) {
 		// Contains calls that need to be updated only every second.
 		// Sensor readings and alerts are updated every second with new warning
 		// messages or system alerts.
-		if (PreviousSecond != ClockRegisters[SECOND]) {
+		if (MasterPreviousSecond != ClockRegisters[SECOND]) {
 			GatherSensorData(Data);
 			Alerts(Data);
 			SecondsCounter++;
 			Data->MinuteCounter++;
 
-			PreviousSecond = ClockRegisters[SECOND];
+			MasterPreviousSecond = ClockRegisters[SECOND];
 		}
 
 
@@ -46,6 +47,15 @@ void Main_Sequence(SensorData * Data) {
 				Display_Module_MainScreen(Data, ClockX);
 		}
 
+		// Reset to the main screen if there is no input from the user
+		// for one minute.
+		if (Data->MinuteCounter >= 60 && Data->State != MAIN) {
+			Data->State = MAIN;
+			Display_Clear_Screen();
+			Data->MinuteCounter = 0;
+			Data->KeyCombo[LAST_KEY] = 0;
+		}
+
 		// Refresh interrupt handles functions that need to be updated frequently.
 		// Such as update clock position and reading the new time from the RTC.
 		if (RefreshInterrupt) {
@@ -53,14 +63,6 @@ void Main_Sequence(SensorData * Data) {
 			Display_Module_UpdateBacklight(Data);
 			RTC_Module_Read(&Data);
 
-
-
-			// Reset to the main screen if there is no input from the user
-			// for one minute.
-			if (Data->MinuteCounter >= 60) {
-				Data->State == MAIN;
-				Data->MinuteCounter = 0;
-			}
 
 			// Regularly clear the watchdog timer so the system
 			// does not reset.
@@ -166,7 +168,7 @@ void Main_Sequence(SensorData * Data) {
 					Data->State = TOGGLELOCK;
 
 					// Ensures that this state does not get toggle again.
-					Data->KeyCombo[LAST_KEY] = '\0;';
+					Data->KeyCombo[LAST_KEY] = 0;
 
 				} else if (Data->KeyCombo[LAST_KEY] == '2') {
 
@@ -200,14 +202,18 @@ void Main_Sequence(SensorData * Data) {
 					}
 					if (Data->ArmedStatus == ARMED)
 					{
+						// Set the minute counter to zero.
+						Data->MinuteCounter = 0;
+						Data->State = ARMING;
+
 						// Update flash with the time the door was unlocked.
 						Flash_Module_PushDateTimeUp(&Data->FlashStorage.ArmTimes);
 						Flash_Module_SaveToFlash(&Data->FlashStorage);
 					}
 
-					// Refresh display
-					Display_Menu(Data);
 					Data->KeyCombo[LAST_KEY] = 0;
+
+					Display_Clear_Screen();
 
 				}
 				// If the user chooses to go back, bring them back to the main menu.
@@ -339,6 +345,24 @@ void Main_Sequence(SensorData * Data) {
 					Data->MotorStatus = LOCK;
 					Data->State = MENU;
 					break;
+				}
+
+				Data->State = MENU;
+
+				break;
+			}
+
+			// Provides a count down before the device is armed.
+			case ARMING:
+			{
+				if (PreviousSecond != ClockRegisters[SECOND]) {
+					Display_Module_ArmingScreen(Data);
+				}
+
+				if (Data->MinuteCounter >= 15) {
+					Display_Clear_Screen();
+					Data->MinuteCounter = 0;
+					Data->State = MAIN;
 				}
 
 				break;
