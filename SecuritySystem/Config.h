@@ -1,3 +1,6 @@
+/**
+ * Configuration File.
+ */
 #include "driverlib.h"
 
 #include "Protocols/I2C.h"

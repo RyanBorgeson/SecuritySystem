@@ -1,7 +1,11 @@
+/**
+ * Handles starting up and initalizing all modules and components
+ * used in the system.
+ * @Author Ryan Borgeson
+ * @Date 12/12/2016
+ */
 #include "Startup.h"
 
-// TODO: Startup sequence should contain tests to verify each
-// sensor is working correctly.
 void Startup_Sequence(SensorData * Data) {
 
 	// Initialize and setup clocks and systick timer.
@@ -50,12 +54,7 @@ void Startup_Sequence(SensorData * Data) {
 	Data->MotorStatus = LOCK;
 	Buzzer_Module_Off();
 
-
-
 	// Delay splash screen for at least 2 seconds.
 	SysTick_delay(SPLASH_DELAY);
-
-
-
 
 }

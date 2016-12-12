@@ -10,6 +10,9 @@
 
 #include "../Config.h"
 
+// P4.0 is DOOR
+// P6.1 is WINDOW
+
 /**
  * Initializes Hall Effect sensors by setting their pins as inputs.
  * Also, pull-up resistor are used to ensure the initial value is high.

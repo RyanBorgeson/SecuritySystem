@@ -10,13 +10,9 @@
 
 SensorData SensorReadings;
 
-volatile uint32_t MCLKClockSpeed;
-volatile uint32_t SMCLKClockSpeed;
-volatile uint32_t ACLKClockSpeed;
-volatile uint8_t test;
-
 int main(void) {
 
+	// Startup system.
 	Startup_Sequence(&SensorReadings);
 
 	// Load main program sequence assuming startup passes all
