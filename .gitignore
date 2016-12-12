@@ -31,3 +31,7 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Hide metadata
+.metadata
+SecuritySystem/Debug/*
