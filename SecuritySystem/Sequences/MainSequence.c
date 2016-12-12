@@ -1,13 +1,10 @@
 #include "MainSequence.h"
 
 
-
-volatile int CurrentDigit = 0;
-
 // Used specifically for handling set time and date.
 uint8_t SetDateTime[6] = { 0, 0, 0, 0, 0, 0 };
-int SetTimeCounter = 0, PreviousDigit = 0;
-char SetTimeDigits[2];
+int SetTimeCounter = 0;
+int CurrentDigit = 0;
 
 void Main_Sequence(SensorData * Data) {
 
@@ -373,9 +370,7 @@ void Main_Sequence(SensorData * Data) {
 	}
 }
 
-
-void TA0_0_IRQHandler(SensorData * Data) {
-
+void TA0_0_IRQHandler() {
 
 	RefreshInterrupt = 1;
 
@@ -386,7 +381,6 @@ void TA0_0_IRQHandler(SensorData * Data) {
 int EqualPins(char * SavedPin, char * EnteredPin) {
 	return (SavedPin[0] == EnteredPin[0]) && (SavedPin[1] == EnteredPin[1]) && (SavedPin[2] == EnteredPin[2]) && (SavedPin[3] == EnteredPin[3]);
 }
-
 
 void GatherSensorData(SensorData * Data) {
 	Proximity_Module_Read(Data);

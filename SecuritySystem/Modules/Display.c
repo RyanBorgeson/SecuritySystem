@@ -116,7 +116,7 @@ void Display_Module_SetPIN(SensorData * Data, int Digits) {
 	}
 
 
-	Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
+	//Display_Module_DrawString("* BACK", ST7735_Color565(255, 255, 255), ST7735_Color565(0, 0, 0), SCREEN_WIDTH - 55, SCREEN_HEIGHT - 20, 1, 7);
 
 }
 

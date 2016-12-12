@@ -12,22 +12,20 @@ void Alerts(SensorData * Data) {
 
 
 	if (ClockRegisters[TEMPERATURE] > 0x43) {
-			if (Data->State == MAIN)
-				Display_Module_Warning("Fire");
 
-			Buzzer_Module_ToggleTone();
+		if (Data->State == MAIN)
+			Display_Module_Warning("Fire");
 
-			if (ToggleState) {
-				RGB_Module_SetColor(RED);
-				ToggleState = !ToggleState;
-			} else {
-				RGB_Module_SetColor(BLACK);
-				ToggleState = !ToggleState;
-			}
+		Buzzer_Module_On();
+
+		if (ToggleState) {
+			RGB_Module_SetColor(RED);
+			ToggleState = !ToggleState;
 		} else {
-			//Buzzer_Module_Off();
-			RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
+			RGB_Module_SetColor(BLACK);
+			ToggleState = !ToggleState;
 		}
+	}
 
 	Buzzer_Module_ToggleTone();
 
@@ -114,16 +112,14 @@ void Alerts(SensorData * Data) {
 			Display_Module_RemoveWarning();
 		}
 
-		Buzzer_Module_Off();
-
-		RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
-
+		if (ClockRegisters[TEMPERATURE] <= 0x43) {
+			Buzzer_Module_Off();
+			RGB_Module_SetColor(Data->ArmedStatus == NOTARMED ? GREEN : RED);
+		}
 		Data->AlertStatuses[WINDOW] = 0;
 		Data->AlertStatuses[DOOR] = 0;
 		Data->AlertStatuses[PROXIMITY] = 0;
 	}
-
-	//static uint8_t ConvertedTemperature = atoi(ConvertBCDToString(ClockRegisters[TEMPERATURE]));
 
 
 }
