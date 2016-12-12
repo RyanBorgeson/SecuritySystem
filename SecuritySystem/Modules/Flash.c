@@ -1,24 +1,20 @@
+/**
+ * Methods that handle interaction between ram and flash. Allows
+ * information to be stored in flash and read again once the system
+ * boots up.
+ * @Author Ryan Borgeson
+ * @Date 12/12/2016
+ */
+
 #include "Flash.h"
 
 
-
-/**
- * Reads the date and time information from flash and stores it in the
- * date information array.
- * @param Date Date information array.
- */
 void Flash_Module_Read(SavedInformation * Info) {
 	 // point to address in flash
 	SavedInformation * addr_pointer = CALIBRATION_START + 1;
 	*(Info) = *(addr_pointer);
 }
 
-/**
- * Save to flash allows the date information to be saved to flash so that
- * when the device is powered down and then back up the date information will
- * be saved.
- * @param Date Date information array to save.
- */
 void Flash_Module_SaveToFlash(SavedInformation * Info) {
 	/* Setting MCLK to 48MHz for faster programming */
 	MAP_PCM_setCoreVoltageLevel(PCM_VCORE1);
@@ -39,14 +35,6 @@ void Flash_Module_SaveToFlash(SavedInformation * Info) {
 	MAP_FlashCtl_protectSector(FLASH_INFO_MEMORY_SPACE_BANK0,FLASH_SECTOR0);
 }
 
-
-
-/**
- * Push DateTime Up will push older dates up in the date information array.
- * This will allow for older dates to drop off and new dates to be added to
- * the array easily.
- * @param Date Array containing all five dates.
- */
 void Flash_Module_PushDateTimeUp(uint8_t * Date) {
 	int i, x;
 	for (x = 0; x < 6; x++)

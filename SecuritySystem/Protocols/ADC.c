@@ -1,11 +1,9 @@
+/**
+ * Configures and sets up the ADC.
+ */
 
 #include "ADC.h"
 
-
-/**
- * Initializes the ADC on the MSP432 and configures ADC memory
- * to save the ADC value when completed.
- */
 void ADC_Init(void) {
 
 	// TODO: Ensure the clock divider is set correctly. I think this is for 3Mhz.

@@ -1,13 +1,13 @@
-#include "UART.h"
-
-
 /**
  * Initialize UART in order to communicate with host computer or other
  * device over UART.
  * Required in order to send and receive commands through terminal.
  * Source Code From Lecture
  */
-void UART_Init(void){
+
+#include "UART.h"
+
+void UART_Init(void) {
 	EUSCI_A0->CTLW0 = 0x0001; // hold the USCI module in reset mode
 	// bit15=0, no parity bits
 	// bit14=x, not used when parity is disabled
@@ -29,52 +29,23 @@ void UART_Init(void){
 	P1SEL1 &= ~0x0C; // configure P1.3 and P1.2 as primary module function
 	EUSCI_A0->CTLW0 &= ~0x0001; // enable the USCI module
 	EUSCI_A0->IE &= ~0x000F; // disable interrupts
-
-
-	/*EUSCI_A2->CTLW0 = 0x0001;
-	EUSCI_A2->CTLW0 = 0x00C1;
-	EUSCI_A2->MCTLW &= ~0xFFF1;
-	P3SEL0 |= 0x0C;
-	P3SEL1 &= 0x0C;
-	EUSCI_A2->CTLW0 &= ~0x0001;
-	EUSCI_A2->IE &= ~0x000F;*/
 }
 
-/**
- * Output character by placing in trasmit buffer.
- * Source Code From Lecture.
- * @param Data Information to output to terminal.
- */
-void UART_OutChar(char data){
+void UART_OutChar(char data) {
 	while((EUSCI_A0->IFG&0x02) == 0);
 	EUSCI_A0->TXBUF = data;
 }
 
-
-/**
- * Output character by placing in trasmit buffer.
- * Source Code From Lecture.
- * @param Data Information to output to terminal.
- */
-void WireLess_Out(char data){
+void WireLess_Out(char data) {
 	while((EUSCI_A2->IFG&0x02) == 0);
 	EUSCI_A2->TXBUF = data;
 }
 
-/**
- * Send character over UART to host computer.
- * Source Code From Lecture.
- */
-char WireLess_In(void){
+char WireLess_In(void) {
 	while ((EUSCI_A2->IFG&0x01) == 0);
 	return ((char)(EUSCI_A2->RXBUF));
 }
 
-/**
- * Output a string of characters one at a time through UART
- * to the host computer.
- * @param OutputString String to output to terminal.
- */
 void UART_OutString(char * OutputString) {
 	uint8_t i;
 	for (i = 0; i < (int)strlen(OutputString); i++) {

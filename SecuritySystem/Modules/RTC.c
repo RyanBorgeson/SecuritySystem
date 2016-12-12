@@ -1,3 +1,10 @@
+/**
+ * RTC Module handles date, time, and temperature information. Below are
+ * is the configuration and method calls associated with the RTC Module.
+ * @Author Ryan Borgeson
+ * @Date 10/21/2016
+ */
+
 #include "RTC.h"
 
 void RTC_Module_Write(uint8_t Year, uint8_t Month, uint8_t Day, uint8_t Hour, uint8_t Minute, uint8_t Second) {
@@ -39,32 +46,6 @@ void RTC_Module_Read(SensorData * Data) {
 	// Wait for bus release, ready to receive.
 	while (MAP_I2C_isBusBusy(EUSCI_B1_BASE));
 
-/*
-	// Read time, date, and temperature from RTC registers.
-	// DateTime type definition that holds the returned data.
-	DateTime Now;
-	int i;
-
-	// Read all results and save RTC register values.
-	for (i = 0; i < TOTAL_READINGS; i++) {
-		Data->RTC[i] = MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
-
-		// Save date and time.
-		Now.Day = (i == DAY) ? Data->RTC[DAY] : Now.Day;
-		Now.Month = (i == MONTH) ? Data->RTC[MONTH] : Now.Month;
-		Now.Year = (i == YEAR) ? Data->RTC[YEAR] : Now.Year;
-		Now.Hour = (i == HOUR) ? Data->RTC[HOUR] : Now.Hour;
-		Now.Minute = (i == MINUTE) ? Data->RTC[MINUTE] : Now.Minute;
-		Now.Seconds = (i == SECOND) ? Data->RTC[SECOND] : Now.Seconds;
-
-		// Save temperature information.
-		Data->Temperature = (i == TEMPERATURE) ? Data->RTC[TEMPERATURE] : Data->Temperature;
-		Data->TempDecimal = (i == TEMP_DECIMAL) ? Data->RTC[TEMP_DECIMAL] : Data->TempDecimal;
-	}
-
-	// Add date and time to the data object.
-	Data->DateTime = Now;
-*/
 	ClockRegisters[0]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
 	ClockRegisters[1]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);
 	ClockRegisters[2]=MAP_I2C_masterReceiveSingleByte(EUSCI_B1_BASE);

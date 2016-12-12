@@ -14,6 +14,12 @@
 
 
 /**
+ * Initialize photoresistor pins and ADC.
+ */
+void AmbientLight_Module_Init(void);
+
+
+/**
  * Read ambient light reading from the photoresistor and store the value
  * in a sensor data structure.
  * @param Data Sensor data and readings.

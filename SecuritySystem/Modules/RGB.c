@@ -1,3 +1,8 @@
+/**
+ * Controls the color of the external RGB LED.
+ * @Author Ryan Borgeson
+ * @Date 12/12/2016
+ */
 #include "RGB.h"
 
 

@@ -1,3 +1,8 @@
+/**
+ * Main program sequence executes after the inital startup sequence.
+ * @Author Ryan Borgeson
+ * @Date 12/12/2016
+ */
 #include "MainSequence.h"
 
 

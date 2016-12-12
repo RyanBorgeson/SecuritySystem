@@ -5,6 +5,12 @@
  */
 #include "AmbientLight.h"
 
+void AmbientLight_Module_Init(void) {
+	// Setup photoresistor pins to work with the ADC.
+	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P5, GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
+	GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN5);
+}
+
 
 void AmbientLight_Module_Read(SensorData * Data) {
 
@@ -21,10 +27,4 @@ void AmbientLight_Module_Read(SensorData * Data) {
 	// Enabling/Toggling Conversion
 	MAP_ADC14_enableConversion();
 	MAP_ADC14_toggleConversionTrigger();
-}
-
-
-void AmbientLight_Module_Init(void) {
-	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P5, GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
-	GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN5);
 }

@@ -1,21 +1,15 @@
+/**
+ * Handles keypad interaction and debounce for the keypad. Also, saves the
+ * current button press.
+ * @Date 12/12/2016
+ */
 #include "Keypad.h"
 
 
 void Keypad_Init(SensorData * Data) {
-
 	P2->DIR &= ~0xF0;
-
-
-//	GPIO_setAsInputPin(GPIO_PORT_P2, GPIO_PIN4 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
-	//GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2);
-
 }
 
-/**
- * Scan keys looks at each column to determine if it has been pressed.
- * If so, the row will then be checked. When a column is not being check
- * it is set to a high impedance to protect the I/O.
- */
 void Keypad_Scan(void) {
 	static uint8_t idx = 0;
 
@@ -49,8 +43,6 @@ uint8_t Keypad_Debounce(void) {
 	if (KeypadDebounceState == 0xFFFC) return 1;
 	return 0;
 }
-
-
 
 int Keypad_SaveButtonPress(uint16_t PressedKey, SensorData * Data) {
 
@@ -95,17 +87,7 @@ int Keypad_SaveButtonPress(uint16_t PressedKey, SensorData * Data) {
 	return 0;
 }
 
-
-
-
 void Keypad_InsertKeyCombo(char Key, SensorData * Data) {
-	uint8_t KeyCombinations[4][3] = {
-			{ 0x2A, 0x30, 0x23 },
-			{ 0x37, 0x38, 0x39 },
-			{ 0x34, 0x35, 0x36 },
-			{ 0x31, 0x32, 0x33 }
-	};
-
 	Data->KeyCombo[3] = Data->KeyCombo[2];
 	Data->KeyCombo[2] = Data->KeyCombo[1];
 	Data->KeyCombo[1] = Data->KeyCombo[0];

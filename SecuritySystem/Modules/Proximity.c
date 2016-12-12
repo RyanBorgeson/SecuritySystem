@@ -1,6 +1,8 @@
 /**
  * Proximity sensors detect motion or movement from a 10 foot distance. This
  * initializes pins, pull-up resistors, and reads input from the pins.
+ * @Author Ryan Borgeson
+ * @Date 12/12/2016
  */
 #include "Proximity.h"
 

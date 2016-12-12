@@ -1,8 +1,7 @@
-/*
- * I2C.c
- *
- *  Created on: Oct 18, 2016
- *      Author: Ryan
+/**
+ * Configures and setups up the I2C module for use with the
+ * SMCLK clock source. This allow for communication between the RTC
+ * and MSP432.
  */
 #include "I2C.h"
 
@@ -16,19 +15,12 @@ const eUSCI_I2C_MasterConfig i2cConfig =
 	EUSCI_B_I2C_NO_AUTO_STOP			// No Autostop
 };
 
-
-/**
- * Initialize I2C module to be used with DS3231 RTC. Setup
- * Pin output, initiate master, and determine slave address.
- * Source Code From TI MSP432 Technical Manual.
- */
 void I2C_Init(void) {
 
 	// Select Port 6 for I2C
 	// Set Pin 4, 5 to input Primary Module Function,
 	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P6,
 	GPIO_PIN4 + GPIO_PIN5, GPIO_PRIMARY_MODULE_FUNCTION);
-
 
 	/* Initializing I2C Master to SMCLK at 400kbs with no autostop */
 	MAP_I2C_initMaster(EUSCI_B1_BASE, &i2cConfig);
